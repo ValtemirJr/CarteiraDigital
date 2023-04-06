@@ -1,0 +1,65 @@
+﻿@model DesafioCarteira.Models.Pessoa
+
+@{
+    ViewData["Title"] = "Extrato";
+}
+
+<h1>Extrato de @Model.Nome</h1>
+
+<div class="form-group">
+    <a asp-action="Lista" class="btn btn-link btn-sm">Voltar</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Descrição
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Entradas[0].Valor)
+            </th>
+            <th>
+                Data
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var entrada in Model.Entradas)
+        {
+            <tr>
+                <td class="col-1">
+                    @Html.DisplayFor(modelItem => entrada.Descricao)
+                </td>
+                <td class="col-1">
+                    @Html.DisplayFor(modelItem => entrada.Valor)
+                </td>
+                <td class="col-1">
+                    @Html.DisplayFor(modelItem => entrada.DataEntrada)
+                </td>
+            </tr>
+        }
+        @foreach (var entrada in Model.Saidas)
+        {
+            <tr>
+                <td class="col-1">
+                    @Html.DisplayFor(modelItem => entrada.Descricao)
+                </td>
+                <td class="col-1">
+                    @Html.DisplayFor(modelItem => entrada.Valor)
+                </td>
+                <td class="col-1">
+                    @Html.DisplayFor(modelItem => entrada.DataSaida)
+                </td>
+            </tr>
+        }
+
+
+        @{
+            int quantidadeEntradas = Model.Entradas.Count();
+            int quantidadeSaidas = Model.Saidas.Count();
+
+            
+         } 
+    </tbody>
+</table>
