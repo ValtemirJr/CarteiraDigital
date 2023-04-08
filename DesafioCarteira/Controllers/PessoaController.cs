@@ -63,7 +63,6 @@ namespace DesafioCarteira.Controllers
         public static IList<Object> Merge(IList<MovimentoEntrada> entradas, IList<MovimentoSaida> saidas)
         {
             IList<Object> extrato = new List<Object>();
-
             if (entradas.Count == 0)
             {
                 return saidas.Select(x => (Object)x).ToList();
@@ -72,9 +71,7 @@ namespace DesafioCarteira.Controllers
             {
                 return entradas.Select(x => (Object)x).ToList();
             }
-
             int i = 0, j = 0;
-
             while (i < entradas.Count && j < saidas.Count)
             {
                 if (entradas[i].DataEntrada > saidas[j].DataSaida)
@@ -88,19 +85,16 @@ namespace DesafioCarteira.Controllers
                     j++;
                 }
             }
-
             while (i < entradas.Count)
             {
                 extrato.Add(entradas[i]);
                 i++;
             }
-
             while (j < saidas.Count)
             {
                 extrato.Add(saidas[j]);
                 j++;
             }
-
             return extrato;
         }
 
