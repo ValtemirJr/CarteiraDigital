@@ -1,10 +1,11 @@
-﻿@model DesafioCarteira.Models.Pessoa
+﻿@model IList<Object>
 
 @{
     ViewData["Title"] = "Extrato";
+    MovimentoSaida pessoa = (MovimentoSaida)Model[0];
 }
 
-<h1>Extrato de @Model.Nome</h1>
+<h1>Extrato de @pessoa.Pessoa.Nome</h1>
 
 <div class="form-group">
     <a asp-action="Lista" class="btn btn-link btn-sm">Voltar</a>
@@ -14,10 +15,13 @@
     <thead>
         <tr>
             <th>
+                Tipo
+            </th>
+            <th>
                 Descrição
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Entradas[0].Valor)
+                Valor
             </th>
             <th>
                 Data
@@ -25,41 +29,44 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var entrada in Model.Entradas)
+        @foreach (var obj in Model)
         {
-            <tr>
-                <td class="col-1">
-                    @Html.DisplayFor(modelItem => entrada.Descricao)
-                </td>
-                <td class="col-1">
-                    @Html.DisplayFor(modelItem => entrada.Valor)
-                </td>
-                <td class="col-1">
-                    @Html.DisplayFor(modelItem => entrada.DataEntrada)
-                </td>
-            </tr>
+            if (obj is MovimentoEntrada)
+            {
+                MovimentoEntrada o = (MovimentoEntrada)obj;
+                <tr>
+                    <td class="col-1">
+                        Entrada
+                    </td>
+                    <td class="col-1">
+                        @Html.DisplayFor(modelItem => o.Descricao)
+                    </td>
+                    <td class="col-1">
+                        @Html.DisplayFor(modelItem => o.Valor)
+                    </td>
+                    <td class="col-1">
+                        @Html.DisplayFor(modelItem => o.DataEntrada)
+                    </td>
+                </tr>
+            }
+            else if (obj is MovimentoSaida)
+            {
+                MovimentoSaida o = (MovimentoSaida)obj;
+                <tr>
+                    <td class="col-1">
+                        Saida
+                    </td>
+                    <td class="col-1">
+                        @Html.DisplayFor(modelItem => o.Descricao)
+                    </td>
+                    <td class="col-1">
+                        @Html.DisplayFor(modelItem => o.Valor)
+                    </td>
+                    <td class="col-1">
+                        @Html.DisplayFor(modelItem => o.DataSaida)
+                    </td>
+                </tr>
+            }
         }
-        @foreach (var entrada in Model.Saidas)
-        {
-            <tr>
-                <td class="col-1">
-                    @Html.DisplayFor(modelItem => entrada.Descricao)
-                </td>
-                <td class="col-1">
-                    @Html.DisplayFor(modelItem => entrada.Valor)
-                </td>
-                <td class="col-1">
-                    @Html.DisplayFor(modelItem => entrada.DataSaida)
-                </td>
-            </tr>
-        }
-
-
-        @{
-            int quantidadeEntradas = Model.Entradas.Count();
-            int quantidadeSaidas = Model.Saidas.Count();
-
-            
-         } 
     </tbody>
 </table>

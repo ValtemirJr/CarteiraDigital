@@ -55,8 +55,53 @@ namespace DesafioCarteira.Controllers
         public async Task<IActionResult> Extrato(int pessoaId)
         {
             Pessoa pessoa = await _session.GetAsync<Pessoa>(pessoaId);
+            IList<Object> extrato = Merge(pessoa.Entradas, pessoa.Saidas);
 
-            return View(pessoa);
+            return View(extrato);
+        }
+
+        public static IList<Object> Merge(IList<MovimentoEntrada> entradas, IList<MovimentoSaida> saidas)
+        {
+            IList<Object> extrato = new List<Object>();
+
+            if (entradas.Count == 0)
+            {
+                return saidas.Select(x => (Object)x).ToList();
+            }
+            if (saidas.Count == 0)
+            {
+                return entradas.Select(x => (Object)x).ToList();
+            }
+
+            int i = 0, j = 0;
+
+            while (i < entradas.Count && j < saidas.Count)
+            {
+                if (entradas[i].DataEntrada > saidas[j].DataSaida)
+                {
+                    extrato.Add(entradas[i]);
+                    i++;
+                }
+                else
+                {
+                    extrato.Add(saidas[j]);
+                    j++;
+                }
+            }
+
+            while (i < entradas.Count)
+            {
+                extrato.Add(entradas[i]);
+                i++;
+            }
+
+            while (j < saidas.Count)
+            {
+                extrato.Add(saidas[j]);
+                j++;
+            }
+
+            return extrato;
         }
 
         [HttpPost]
