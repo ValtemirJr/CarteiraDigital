@@ -56,7 +56,7 @@ namespace DesafioCarteira.Controllers
         {
             Pessoa pessoa = await _session.GetAsync<Pessoa>(pessoaId);
             IList<Object> extrato = Merge(pessoa.Entradas, pessoa.Saidas);
-
+            ViewBag.NomePessoa = pessoa.Nome;
             return View(extrato);
         }
 

@@ -2,10 +2,9 @@
 
 @{
     ViewData["Title"] = "Extrato";
-    MovimentoSaida pessoa = (MovimentoSaida)Model[0];
 }
 
-<h1>Extrato de @pessoa.Pessoa.Nome</h1>
+<h1>Extrato de @ViewBag.NomePessoa</h1>
 
 <div class="form-group">
     <a asp-action="Lista" class="btn btn-link btn-sm">Voltar</a>
