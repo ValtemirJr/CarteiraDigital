@@ -13,17 +13,20 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Tipo
+            <th class="col-2 text-center">
+                Data Movimento
             </th>
-            <th>
+            <th class="col-5 text-center">
                 Descrição
             </th>
-            <th>
+            <th class="col-1 text-center">
+                Tipo(E/S)
+            </th>
+            <th class="col-2 text-center">
                 Valor
             </th>
-            <th>
-                Data
+            <th class="col-2 text-center">
+                Saldo
             </th>
         </tr>
     </thead>
@@ -34,17 +37,20 @@
             {
                 MovimentoEntrada o = (MovimentoEntrada)obj;
                 <tr>
-                    <td class="col-1">
-                        Entrada
+                    <td>
+                        @Html.DisplayFor(modelItem => o.DataEntrada)
                     </td>
-                    <td class="col-1">
+                    <td>
                         @Html.DisplayFor(modelItem => o.Descricao)
                     </td>
-                    <td class="col-1">
+                    <td>
+                        E
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => o.Valor)
                     </td>
-                    <td class="col-1">
-                        @Html.DisplayFor(modelItem => o.DataEntrada)
+                    <td>
+                        @Html.DisplayFor(modelItem => o.Pessoa.Saldo)
                     </td>
                 </tr>
             }
@@ -52,17 +58,20 @@
             {
                 MovimentoSaida o = (MovimentoSaida)obj;
                 <tr>
-                    <td class="col-1">
-                        Saida
+                    <td>
+                        @Html.DisplayFor(modelItem => o.DataSaida)
                     </td>
-                    <td class="col-1">
+                    <td >
                         @Html.DisplayFor(modelItem => o.Descricao)
                     </td>
-                    <td class="col-1">
+                    <td>
+                        S
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => o.Valor)
                     </td>
-                    <td class="col-1">
-                        @Html.DisplayFor(modelItem => o.DataSaida)
+                    <td>
+                        @Html.DisplayFor(modelItem => o.Pessoa.Saldo)
                     </td>
                 </tr>
             }

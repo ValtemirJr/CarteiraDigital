@@ -10,17 +10,18 @@
     <a asp-action="Cadastrar" class="btn btn-outline-success btn-sm">Novo Cliente</a>
 </p>
 <table class="table table-hover">
-    <thead>
+    <thead class="thead-light">
         <tr>
-            <th >
+            <th class="col-4">
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
-            <th>
+            <th class="col-2">
                 @Html.DisplayNameFor(model => model.Minimo)
             </th>
-            <th>
+            <th class="col-2">
                 @Html.DisplayNameFor(model => model.Saldo)
             </th>
+            <th class="col-6"></th>
         </tr>
     </thead>
     <tbody>
@@ -35,16 +36,37 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Saldo)
             </td>
-            <td class="col-1">
-                <a asp-controller="Pessoa" asp-action="Update" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm">Atualizar</a>
-            </td>
-            <td class="col-1">
-                <a asp-controller="Pessoa" asp-action="Extrato" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm">Extrato</a> 
-            </td>
-            <td class="col-1">
-                <form asp-controller="Pessoa" asp-action="Delete" asp-route-pessoaId="@item.PessoaId" onsubmit="return confirm('Excluir @item.Nome?')">
-                    <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                </form>
+            <td >
+                <div class="row justify-content-center">
+                    <a asp-controller="Pessoa" asp-action="Update" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Atualizar</a>
+                    <a asp-controller="Pessoa" asp-action="Extrato" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Extrato</a>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-outline-danger btn-sm mr-1" data-toggle="modal" data-target="#DeleteModal-@item.PessoaId">
+                        Excluir
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="DeleteModal-@item.PessoaId" tabindex="-1" role="dialog" aria-labelledby="DeleteModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="DeleteModalCenterTitle">Excluir cliente</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Tem certeza que deseja excluir @item.Nome?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-dismiss="modal">Cancelar</button>
+                                    <form asp-controller="Pessoa" asp-action="Delete" asp-route-pessoaId="@item.PessoaId">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm mr-1">Sim</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
 }

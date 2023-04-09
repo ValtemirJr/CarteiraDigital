@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Z3+LBtLls36NeUIANXcmwrTeWnIul0fr/aSFEfXMZx+xGrjrfTGSo2XCAMqTXRb4/ZcxHEiwrgX09fUBRXdGqg==",
+  "dgSpecHash": "SiRVCrrPa4xUj0cxWhp6iQgzUdL4fClcPhp/cqJZmQAk6vPlULIgG95mocTPU25iovFy3L0VzXr06A/ZPfAQUg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\valte\\OneDrive\\Área de Trabalho\\carteira\\CarteiraDigital\\DesafioCarteira\\DesafioCarteira.csproj",
+  "projectFilePath": "C:\\Users\\valte\\OneDrive\\Área de Trabalho\\carteira\\DesafioCarteira\\DesafioCarteira.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\valte\\.nuget\\packages\\antlr3.runtime\\3.5.1\\antlr3.runtime.3.5.1.nupkg.sha512",
     "C:\\Users\\valte\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",

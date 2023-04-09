@@ -8674,11 +8674,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\valte\\OneDrive\\Área de Trabalho\\carteira\\CarteiraDigital\\DesafioCarteira\\DesafioCarteira.csproj",
+      "projectUniqueName": "C:\\Users\\valte\\OneDrive\\Área de Trabalho\\carteira\\DesafioCarteira\\DesafioCarteira.csproj",
       "projectName": "DesafioCarteira",
-      "projectPath": "C:\\Users\\valte\\OneDrive\\Área de Trabalho\\carteira\\CarteiraDigital\\DesafioCarteira\\DesafioCarteira.csproj",
+      "projectPath": "C:\\Users\\valte\\OneDrive\\Área de Trabalho\\carteira\\DesafioCarteira\\DesafioCarteira.csproj",
       "packagesPath": "C:\\Users\\valte\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\valte\\OneDrive\\Área de Trabalho\\carteira\\CarteiraDigital\\DesafioCarteira\\obj\\",
+      "outputPath": "C:\\Users\\valte\\OneDrive\\Área de Trabalho\\carteira\\DesafioCarteira\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\valte\\AppData\\Roaming\\NuGet\\NuGet.Config",
