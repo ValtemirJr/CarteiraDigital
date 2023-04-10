@@ -61,7 +61,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => o.DataSaida)
                     </td>
-                    <td >
+                    <td>
                         @Html.DisplayFor(modelItem => o.Descricao)
                     </td>
                     <td>
@@ -78,3 +78,7 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
