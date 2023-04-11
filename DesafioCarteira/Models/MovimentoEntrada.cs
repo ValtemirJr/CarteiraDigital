@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,8 +11,10 @@ namespace DesafioCarteira.Models
         public virtual int EntradaId { get; set; }
         public virtual Pessoa Pessoa { get; set; }
         public virtual DateTime DataEntrada { get; set; }
+        [Required(ErrorMessage = "A descrição é obrigatório.")]
         public virtual string Descricao { get; set; }
-        public virtual double Valor { get; set; }
+        [Required(ErrorMessage = "Coloque um valor minimo.")]
+        public virtual double? Valor { get; set; }
 
         public MovimentoEntrada()
         {

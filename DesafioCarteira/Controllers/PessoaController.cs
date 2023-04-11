@@ -74,7 +74,7 @@ namespace DesafioCarteira.Controllers
             int i = 0, j = 0;
             while (i < entradas.Count && j < saidas.Count)
             {
-                if (entradas[i].DataEntrada > saidas[j].DataSaida)
+                if (entradas[i].DataEntrada < saidas[j].DataSaida)
                 {
                     extrato.Add(entradas[i]);
                     i++;
@@ -134,7 +134,5 @@ namespace DesafioCarteira.Controllers
             }
             return View(pessoa);
         }
-
-        
     }
 }

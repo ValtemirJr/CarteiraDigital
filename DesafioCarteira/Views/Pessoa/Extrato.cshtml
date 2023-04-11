@@ -11,7 +11,7 @@
 </div>
 
 <table class="table">
-    <thead>
+    <thead class="thead-light">
         <tr>
             <th class="col-2 text-center">
                 Data Movimento
@@ -37,19 +37,19 @@
             {
                 MovimentoEntrada o = (MovimentoEntrada)obj;
                 <tr>
-                    <td>
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => o.DataEntrada)
                     </td>
-                    <td>
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => o.Descricao)
                     </td>
-                    <td>
+                    <td class="text-center">
                         E
-                    </td>
-                    <td>
+                    </td> 
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => o.Valor)
                     </td>
-                    <td>
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => o.Pessoa.Saldo)
                     </td>
                 </tr>
@@ -58,19 +58,19 @@
             {
                 MovimentoSaida o = (MovimentoSaida)obj;
                 <tr>
-                    <td>
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => o.DataSaida)
                     </td>
-                    <td>
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => o.Descricao)
                     </td>
-                    <td>
+                    <td class="text-center">
                         S
                     </td>
-                    <td>
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => o.Valor)
                     </td>
-                    <td>
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => o.Pessoa.Saldo)
                     </td>
                 </tr>

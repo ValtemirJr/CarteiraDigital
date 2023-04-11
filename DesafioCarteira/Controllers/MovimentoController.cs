@@ -16,27 +16,32 @@ namespace DesafioCarteira.Controllers
         {
             _session = session;
         }
+
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> NovoMovimento(int pessoaId)
+        public async Task<IActionResult> CriarMovimento(int pessoaId)
         {
-            return View(await _session.GetAsync<Pessoa>(pessoaId));
+            ViewBag.Nome = (_session.Get<Pessoa>(pessoaId)).Nome;
+            ViewBag.Id = pessoaId;
+            return await Task.FromResult(View());
         }
 
         [HttpPost]
-        public async Task<IActionResult> NovoMovimento(MovimentoEntrada entrada)
+        public async Task<IActionResult> CriarMovimento(MovimentoEntrada entrada, int pessoaId)
         {
+            entrada.Pessoa = await _session.GetAsync<Pessoa>(pessoaId);
+
             if (ModelState.IsValid)
             {
                 using (ITransaction transaction = _session.BeginTransaction())
                 {
                     await _session.SaveAsync(entrada);
                     await transaction.CommitAsync();
-                    return RedirectToAction(nameof(NovoMovimento));
+                    return RedirectToAction(nameof(CriarMovimento), new { pessoaId = pessoaId });
                 }
             }
             return View(entrada);
