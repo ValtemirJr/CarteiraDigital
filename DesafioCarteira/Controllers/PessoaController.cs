@@ -1,4 +1,5 @@
 ﻿using DesafioCarteira.Models;
+using DesafioCarteira.Repository;
 using Microsoft.AspNetCore.Mvc;
 using NHibernate;
 using System;
@@ -10,12 +11,8 @@ namespace DesafioCarteira.Controllers
 {
     public class PessoaController : Controller
     {
-        private readonly ISession _session;
-
-        public PessoaController(ISession session)
-        {
-            _session = session;
-        }
+        private readonly PessoaRepository pessoaRepository;
+        public PessoaController(ISession session) => pessoaRepository = new PessoaRepository(session);
 
         [HttpGet]
         public IActionResult Index()
@@ -26,8 +23,7 @@ namespace DesafioCarteira.Controllers
         [HttpGet]
         public IActionResult Lista()
         {
-            IList<Pessoa> pessoas = _session.QueryOver<Pessoa>().List();
-
+            IList<Pessoa> pessoas = pessoaRepository.FindAll().ToList();
             return View(pessoas);
         }
         [HttpGet]
@@ -41,12 +37,8 @@ namespace DesafioCarteira.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (ITransaction transaction = _session.BeginTransaction())
-                {
-                    await _session.SaveAsync(pessoa);
-                    await transaction.CommitAsync();
-                    return RedirectToAction(nameof(Lista));
-                }
+                await pessoaRepository.Add(pessoa);
+                return RedirectToAction(nameof(Lista));              
             }
             return View(pessoa);
         }
@@ -54,7 +46,7 @@ namespace DesafioCarteira.Controllers
         [HttpGet]
         public async Task<IActionResult> Extrato(int pessoaId)
         {
-            Pessoa pessoa = await _session.GetAsync<Pessoa>(pessoaId);
+            Pessoa pessoa = await pessoaRepository.FindByID(pessoaId);
             IList<Object> extrato = Merge(pessoa.Entradas, pessoa.Saidas);
             ViewBag.NomePessoa = pessoa.Nome;
             return View(extrato);
@@ -101,36 +93,25 @@ namespace DesafioCarteira.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int pessoaId)
         {
-            var pessoa = await _session.GetAsync<Pessoa>(pessoaId);
-            using(ITransaction transaction = _session.BeginTransaction())
-            {
-                await _session.DeleteAsync(pessoa);
-                await transaction.CommitAsync();
-                return RedirectToAction(nameof(Lista));
-            }
+            await pessoaRepository.Remove(pessoaId);
+            return RedirectToAction(nameof(Lista));
+            
         }
 
         [HttpGet]
         public async Task<IActionResult> Update(int pessoaId)
         {
-            return View(await _session.GetAsync<Pessoa>(pessoaId));
+            Pessoa pessoa = await pessoaRepository.FindByID(pessoaId);
+            return View(pessoa);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int pessoaId, Pessoa pessoa)
+        public async Task<IActionResult> Update(Pessoa pessoa)
         {
-            if(pessoaId != pessoa.PessoaId)
-            {
-                return NotFound();
-            }
             if (ModelState.IsValid)
             {
-                using(ITransaction transaction = _session.BeginTransaction())
-                {
-                    await _session.SaveOrUpdateAsync(pessoa);
-                    await transaction.CommitAsync();
-                    return RedirectToAction(nameof(Lista));
-                }
+                await pessoaRepository.Update(pessoa);
+                return RedirectToAction(nameof(Lista));                
             }
             return View(pessoa);
         }

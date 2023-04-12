@@ -529,7 +529,6 @@ C:\Users\valte\OneDrive\Área de Trabalho\carteira\DesafioCarteira\obj\Debug\net
 C:\Users\valte\OneDrive\Área de Trabalho\carteira\DesafioCarteira\obj\Debug\net5.0\ref\DesafioCarteira.dll
 C:\Users\valte\OneDrive\Área de Trabalho\carteira\DesafioCarteira\obj\Debug\net5.0\DesafioCarteira.pdb
 C:\Users\valte\OneDrive\Área de Trabalho\carteira\DesafioCarteira\obj\Debug\net5.0\DesafioCarteira.genruntimeconfig.cache
-C:\Users\valte\OneDrive\Área de Trabalho\carteira\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Movimento\NovoMovimento.cshtml.g.cs
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\bin\Debug\net5.0\appsettings.Development.json
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\bin\Debug\net5.0\appsettings.json
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\bin\Debug\net5.0\DesafioCarteira.exe
@@ -708,3 +707,4 @@ C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\o
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\DesafioCarteira.pdb
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\DesafioCarteira.genruntimeconfig.cache
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Movimento\CriarMovimento.cshtml.g.cs
+C:\Users\valte\OneDrive\Área de Trabalho\carteira\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Movimento\CriarMovimento.cshtml.g.cs
