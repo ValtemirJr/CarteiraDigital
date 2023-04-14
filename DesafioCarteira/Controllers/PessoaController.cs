@@ -23,7 +23,7 @@ namespace DesafioCarteira.Controllers
         [HttpGet]
         public IActionResult Lista()
         {
-            IList<Pessoa> pessoas = pessoaRepository.FindAll().ToList();
+            IList<Pessoa> pessoas = pessoaRepository.FindAll().OrderBy(p => p.Nome).ToList();
             return View(pessoas);
         }
         [HttpGet]
@@ -49,7 +49,34 @@ namespace DesafioCarteira.Controllers
             Pessoa pessoa = await pessoaRepository.FindByID(pessoaId);
             IList<Object> extrato = Merge(pessoa.Entradas, pessoa.Saidas);
             ViewBag.NomePessoa = pessoa.Nome;
+            ViewBag.SaldoAnterior = 0;
+            ViewBag.SaldoFinal = SomaMovimentos(pessoa);
             return View(extrato);
+        }
+
+        public async Task<IActionResult> FiltroExtrato()
+        {
+            return View("Extrato");
+        }
+
+        public double? SomaMovimentos(Pessoa pessoa)
+        {
+            double? saldo = 0;
+            if (pessoa.Entradas != null)
+            {
+                foreach (MovimentoEntrada entrada in pessoa.Entradas)
+                {
+                    saldo += entrada.Valor;
+                }
+            }
+            if (pessoa.Saidas != null)
+            {
+                foreach (MovimentoSaida saida in pessoa.Saidas)
+                {
+                    saldo -= saida.Valor;
+                }
+            }
+            return saldo;
         }
 
         public static IList<Object> Merge(IList<MovimentoEntrada> entradas, IList<MovimentoSaida> saidas)
@@ -94,8 +121,7 @@ namespace DesafioCarteira.Controllers
         public async Task<IActionResult> Delete(int pessoaId)
         {
             await pessoaRepository.Remove(pessoaId);
-            return RedirectToAction(nameof(Lista));
-            
+            return RedirectToAction(nameof(Lista));          
         }
 
         [HttpGet]

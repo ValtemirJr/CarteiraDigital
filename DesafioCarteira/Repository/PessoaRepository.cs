@@ -36,6 +36,11 @@ namespace DesafioCarteira.Repository
 
         public async Task<Pessoa> FindByID(int id) => await _session.GetAsync<Pessoa>(id);
 
+        public Pessoa FindByIDPessoa(int id)
+        {
+            Pessoa p =  _session.Get<Pessoa>(id);
+            return p;
+        }
         public async Task Remove(int id)
         {
             ITransaction transaction = null;

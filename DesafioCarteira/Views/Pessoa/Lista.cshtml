@@ -3,73 +3,98 @@
 @{
     ViewData["Title"] = "Lista";
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<h1>Clientes</h1>
 
-<p>
-    <a asp-action="Cadastrar" class="btn btn-outline-success btn-sm">Novo Cliente</a>
-</p>
-<table class="table table-hover">
-    <thead class="thead-light">
-        <tr>
-            <th class="col-4">
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th class="col-2">
-                @Html.DisplayNameFor(model => model.Minimo)
-            </th>
-            <th class="col-2">
-                @Html.DisplayNameFor(model => model.Saldo)
-            </th>
-            <th class="col-6"></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Minimo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Saldo)
-            </td>
-            <td >
-                <div class="row justify-content-center">
-                    <a asp-controller="Movimento" asp-action="CriarMovimento" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Novo movimento</a>
-                    <a asp-controller="Pessoa" asp-action="Update" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Atualizar</a>
-                    <a asp-controller="Pessoa" asp-action="Extrato" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Extrato</a>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-outline-danger btn-sm mr-1" data-toggle="modal" data-target="#DeleteModal-@item.PessoaId">
-                        Excluir
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="DeleteModal-@item.PessoaId" tabindex="-1" role="dialog" aria-labelledby="DeleteModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="DeleteModalCenterTitle">Excluir cliente</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Tem certeza que deseja excluir @item.Nome?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-dismiss="modal">Cancelar</button>
-                                    <form asp-controller="Pessoa" asp-action="Delete" asp-route-pessoaId="@item.PessoaId">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm mr-1">Sim</button>
-                                    </form>
+<div class="container">
+    <h1>Clientes</h1>
+    <p><a asp-action="Cadastrar" class="btn btn-outline-success btn-sm">Novo Cliente</a></p>
+    <input class="form-control" id="myInput" type="text" placeholder="Pesquisar cliente...">
+    <br>
+    <table class="table table-hover table-striped table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th class="col-4">
+                    @Html.DisplayNameFor(model => model.Nome)
+                </th>
+                <th class="col-2">
+                    @Html.DisplayNameFor(model => model.Minimo)
+                </th>
+                <th class="col-2">
+                    @Html.DisplayNameFor(model => model.Saldo)
+                </th>
+                <th class="col-6"></th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Minimo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Saldo)
+                    </td>
+                    <td>
+                        <div class="row justify-content-center">
+                            <a asp-controller="Movimento" asp-action="CriarMovimento" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Novo movimento</a>
+                            <a asp-controller="Pessoa" asp-action="Update" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Atualizar</a>
+                            <a asp-controller="Pessoa" asp-action="Extrato" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Extrato</a>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-outline-danger btn-sm mr-1" data-toggle="modal" data-target="#DeleteModal-@item.PessoaId">
+                                Excluir
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="DeleteModal-@item.PessoaId" tabindex="-1" role="dialog" aria-labelledby="DeleteModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="DeleteModalCenterTitle">Excluir cliente</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Tem certeza que deseja excluir @item.Nome?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-dismiss="modal">Cancelar</button>
+                                            <form asp-controller="Pessoa" asp-action="Delete" asp-route-pessoaId="@item.PessoaId">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm mr-1">Sim</button>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div id="noResults" class="alert alert-warning" role="alert" style="display:none;">Nenhum cliente foi encontrado</div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+                if ($("#myTable tr:visible").length == 0) {
+                    $("#noResults").show(); 
+                } else {
+                    $("#noResults").hide(); 
+                }
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>

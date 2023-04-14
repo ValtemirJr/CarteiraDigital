@@ -1,4 +1,5 @@
 ﻿using DesafioCarteira.Models;
+using DesafioCarteira.Repository;
 using Microsoft.AspNetCore.Mvc;
 using NHibernate;
 using System;
@@ -10,11 +11,13 @@ namespace DesafioCarteira.Controllers
 {
     public class MovimentoController : Controller
     {
-        private readonly ISession _session;
+        private readonly MovimentoRepository movimentoRepository;
+        private readonly PessoaRepository pessoaRepository;
 
-        public MovimentoController(ISession session)
+        public MovimentoController(ISession session) 
         {
-            _session = session;
+            movimentoRepository = new MovimentoRepository(session);
+            pessoaRepository = new PessoaRepository(session);
         }
 
         public IActionResult Index()
@@ -25,26 +28,53 @@ namespace DesafioCarteira.Controllers
         [HttpGet]
         public async Task<IActionResult> CriarMovimento(int pessoaId)
         {
-            ViewBag.Nome = (_session.Get<Pessoa>(pessoaId)).Nome;
             ViewBag.Id = pessoaId;
-            return await Task.FromResult(View());
+            Pessoa pessoa = await pessoaRepository.FindByID(pessoaId);
+            ViewBag.Nome = pessoa.Nome;
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CriarMovimento(MovimentoEntrada entrada, int pessoaId)
+        public async Task<IActionResult> CriarMovimento(MovimentoViewModel movimento)
         {
-            entrada.Pessoa = await _session.GetAsync<Pessoa>(pessoaId);
+            IMovimento movimentoEscolhido = movimento.TipoMovimento ? new MovimentoEntrada() : new MovimentoSaida();
+            movimentoEscolhido.Pessoa = await pessoaRepository.FindByID(movimento.PessoaId);
+            movimentoEscolhido.Descricao = movimento.Descricao;
+            movimentoEscolhido.Valor = movimento.Valor;
 
-            if (ModelState.IsValid)
+            bool permitido;
+
+            if(movimentoEscolhido is MovimentoSaida)
             {
-                using (ITransaction transaction = _session.BeginTransaction())
-                {
-                    await _session.SaveAsync(entrada);
-                    await transaction.CommitAsync();
-                    return RedirectToAction(nameof(CriarMovimento), new { pessoaId = pessoaId });
-                }
+                permitido = await Saque(movimentoEscolhido.Pessoa, movimentoEscolhido.Valor);
             }
-            return View(entrada);
+            else
+            {
+                permitido = await Deposito(movimentoEscolhido.Pessoa, movimentoEscolhido.Valor);
+            }
+
+            if (ModelState.IsValid && permitido)
+            {
+                await movimentoRepository.Add(movimentoEscolhido);
+                return RedirectToAction(nameof(CriarMovimento), new { pessoaId = movimento.PessoaId });
+            }
+            return View(movimento);
+        }
+
+        public async Task<bool> Saque(Pessoa pessoa, double? valor)
+        {
+            if(valor > pessoa.Saldo)
+                return false;
+            pessoa.Saldo = pessoa.Saldo - valor;
+            await pessoaRepository.Update(pessoa);
+            return true;
+        }
+
+        public async Task<bool> Deposito(Pessoa pessoa, double? valor)
+        {
+            pessoa.Saldo = pessoa.Saldo + valor;
+            await pessoaRepository.Update(pessoa);
+            return true;
         }
     }
 }
