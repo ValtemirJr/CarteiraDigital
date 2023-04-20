@@ -44,7 +44,7 @@
                         <div class="row justify-content-center">
                             <a asp-controller="Movimento" asp-action="CriarMovimento" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Novo movimento</a>
                             <a asp-controller="Pessoa" asp-action="Update" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Atualizar</a>
-                            <a asp-controller="Pessoa" asp-action="Extrato" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Extrato</a>
+                            <a asp-controller="Pessoa" asp-action="GeraExtrato" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Extrato</a>
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-outline-danger btn-sm mr-1" data-toggle="modal" data-target="#DeleteModal-@item.PessoaId">
                                 Excluir

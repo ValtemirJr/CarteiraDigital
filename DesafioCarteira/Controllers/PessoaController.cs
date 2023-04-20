@@ -1,5 +1,7 @@
-﻿using DesafioCarteira.Models;
+﻿using DesafioCarteira.Enumerables;
+using DesafioCarteira.Models;
 using DesafioCarteira.Repository;
+using DesafioCarteira.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using NHibernate;
 using System;
@@ -44,20 +46,53 @@ namespace DesafioCarteira.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Extrato(int pessoaId)
+        public async Task<IActionResult> GeraExtrato(int pessoaId)
         {
             Pessoa pessoa = await pessoaRepository.FindByID(pessoaId);
-            IList<Object> extrato = Merge(pessoa.Entradas, pessoa.Saidas);
-            ViewBag.NomePessoa = pessoa.Nome;
-            ViewBag.SaldoAnterior = 0;
-            ViewBag.SaldoFinal = SomaMovimentos(pessoa);
-            return View(extrato);
+            GeraExtratoViewModel extratoView = new GeraExtratoViewModel();
+            extratoView.Extrato = Merge(pessoa.Entradas, pessoa.Saidas);
+            extratoView.PessoaId = pessoaId;
+            ViewBag.Nome = pessoa.Nome;
+            return View(extratoView);
         }
 
-        public async Task<IActionResult> FiltroExtrato()
+        [HttpPost]
+        public async Task<IActionResult> GeraExtrato(string opcao, DateTime? dataInicio, DateTime? dataFim, int pessoaid)
         {
-            return View("Extrato");
+            Pessoa pessoa = await pessoaRepository.FindByID(pessoaid);
+            GeraExtratoViewModel dadosFiltro = new GeraExtratoViewModel();
+            dadosFiltro.PessoaId = pessoaid;
+            dadosFiltro.DataInicio = dataInicio;
+            dadosFiltro.DataFim = dataFim;
+            dadosFiltro.OpcaoDiasExtrato = (EnumFiltroExtrato)Enum.Parse(typeof(EnumFiltroExtrato), opcao);
+            dadosFiltro.Extrato = Merge(pessoa.Entradas, pessoa.Saidas);
+            dadosFiltro.Extrato = FiltrarExtrato(dadosFiltro);
+            return View("GeraExtrato", dadosFiltro);
         }
+
+        public IList<Object> FiltrarExtrato(GeraExtratoViewModel filtro)
+        {
+            IList<Object> extratoFiltrado = new List<Object>();
+            if (filtro.Extrato == null)
+                return filtro.Extrato;
+
+            
+
+
+
+            foreach (var movimento in filtro.Extrato)
+            {
+                if (movimento is MovimentoEntrada && ((MovimentoEntrada)movimento).DataEntrada >= DateTime.Now.AddDays(-1) && ((MovimentoEntrada)movimento).DataEntrada <= DateTime.Now)
+                {
+                    extratoFiltrado.Add(movimento);
+                }
+                else if (movimento is MovimentoSaida && ((MovimentoSaida)movimento).DataSaida >= DateTime.Now.AddDays(-1) && ((MovimentoSaida)movimento).DataSaida <= DateTime.Now)
+                {
+                    extratoFiltrado.Add(movimento);
+                }
+            }
+            return extratoFiltrado;
+         }
 
         public double? SomaMovimentos(Pessoa pessoa)
         {

@@ -1,0 +1,60 @@
+﻿@model IList<Object>
+
+<table class="table table-bordered">
+    <thead class="thead-light">
+        <tr>
+            <th class="col-2 text-center">Data Movimento</th>
+            <th class="col-5 text-center">Descrição</th>
+            <th class="col-1 text-center">Tipo(E/S)</th>
+            <th class="col-2 text-center">Valor</th>
+            <th class="col-2 text-center">Saldo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Model)
+        {
+            if (obj is MovimentoEntrada)
+            {
+                MovimentoEntrada o = (MovimentoEntrada)obj;
+                <tr>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => o.DataEntrada)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => o.Descricao)
+                    </td>
+                    <td class="text-center">
+                        E
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => o.Valor)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => o.Pessoa.Saldo)
+                    </td>
+                </tr>
+            }
+            else if (obj is MovimentoSaida)
+            {
+                MovimentoSaida o = (MovimentoSaida)obj;
+                <tr>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => o.DataSaida)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => o.Descricao)
+                    </td>
+                    <td class="text-center">
+                        S
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => o.Valor)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => o.Pessoa.Saldo)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

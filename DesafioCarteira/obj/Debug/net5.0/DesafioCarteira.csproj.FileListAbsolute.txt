@@ -690,7 +690,6 @@ C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\o
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Pessoa\Cadastrar.cshtml.g.cs
-C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Pessoa\Extrato.cshtml.g.cs
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Pessoa\Lista.cshtml.g.cs
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Pessoa\Update.cshtml.g.cs
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
@@ -708,3 +707,5 @@ C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\o
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\DesafioCarteira.genruntimeconfig.cache
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Movimento\CriarMovimento.cshtml.g.cs
 C:\Users\valte\OneDrive\Área de Trabalho\carteira\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Movimento\CriarMovimento.cshtml.g.cs
+C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Pessoa\GeraExtrato.cshtml.g.cs
+C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Shared\Extrato.cshtml.g.cs
