@@ -81,7 +81,7 @@ namespace DesafioCarteira.Controllers
                 EnumFiltroExtrato.Personalizado => filtro.DataInicio,
                 EnumFiltroExtrato.UltimosSeteDias => DateTime.Now.AddDays(-7),
                 EnumFiltroExtrato.UltimosQuinzeDias => DateTime.Now.AddDays(-15),
-                _ => DateTime.Now.AddDays(-30),
+                _ => DateTime.Now.AddDays(-30)
             };
 
             DateTime? diaFinal = filtro.OpcaoDiasExtrato == EnumFiltroExtrato.Personalizado

@@ -9,6 +9,7 @@
 <div class="form-group" id="filtro-form">
     <a asp-action="Lista" class="btn btn-link btn-sm">Voltar</a>
 </div>
+
 <div>
     <h6>Saldo anterior : </h6>
 </div>
@@ -41,12 +42,13 @@
                     <input type="date" class="form-control" name="dataFim" id="dataFim" />
                 </div>
             </div>
+            <div class="d-flex justify-content-center w-100"><span id="periodoInvalido" class="text-danger"></span></div>
         </div>
     </div>
-    <div class="col-md-3 d-flex justify-content-start align-items-center pt-3">
+    <div class="col-md-3 d-flex justify-content-start align-items-center pt-3" id="botaoFiltro">
         <div class="form-group justify-content-start pt-3">
             <label for="botao"></label>
-            <button name="botao" type="submit" class="btn btn-outline-info btn-sm" style="height: 38px;" id="filtro-form">Filtrar</button>
+            <button name="botao" type="submit" class="btn btn-outline-info btn-sm" style="height: 38px;">Filtrar</button>
         </div>
     </div>
 </form>
@@ -70,35 +72,25 @@
                 periodo.style.display = "block";
             } else {
                 periodo.style.display = "none";
+                dataInicio.value = '';
+                dataFim.value = '';
             }
         });
 
-       @*$(document).ready(function () {
-         $('#filtro-form').submit(function (event) {
-            event.preventDefault(); 
+        const form = document.querySelector('form');
+        const dataInicialInput = form.querySelector('#dataInicio');
+        const dataFinalInput = form.querySelector('#dataFim');
+        const erroData = form.querySelector('#periodoInvalido');
 
-            var opcao = $('#opcao').val();
-            var dataInicio = $('#dataInicio').val();
-            var dataFim = $('#dataFim').val();
-            var pessoaid = $('#pessoaid').val();
+        form.addEventListener('submit', (event) => {
+            const dataInicial = new Date(dataInicialInput.value);
+            const dataFinal = new Date(dataFinalInput.value);
 
-            $.ajax({
-               url: '@Url.Action("GeraExtrato", "Pessoa")',
-               type: 'POST',
-               data: {
-                  opcao: opcao,
-                  dataInicio: dataInicio,
-                  dataFim: dataFim,
-                  pessoaid: pessoaid
-               },
-                success: function (result) {
-                    $('#tabela-partial').html(result); 
-                },
-               error: function (error) {
-                  console.log(error); 
-               }
-            });
-         });
-      });*@
+            if (dataFinal < dataInicial) {
+                event.preventDefault();
+                erroData.textContent = 'A data final não pode ser anterior à data inicial.';
+                botaoFiltro.classList.add('pb-4');
+            }
+        });
     </script>
 }

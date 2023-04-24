@@ -1,5 +1,9 @@
 ﻿@model IList<Object>
 
+@{ 
+    decimal saldo = 0;
+}
+
 <table class="table table-bordered">
     <thead class="thead-light">
         <tr>
@@ -16,6 +20,7 @@
             if (obj is MovimentoEntrada)
             {
                 MovimentoEntrada o = (MovimentoEntrada)obj;
+                saldo += (Decimal)o.Valor;
                 <tr>
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => o.DataEntrada)
@@ -27,16 +32,17 @@
                         E
                     </td>
                     <td class="text-center">
-                        @Html.DisplayFor(modelItem => o.Valor)
+                        R$ @Html.DisplayFor(modelItem => o.Valor)
                     </td>
                     <td class="text-center">
-                        @Html.DisplayFor(modelItem => o.Pessoa.Saldo)
+                        R$ @Html.DisplayFor(modelItem => saldo)
                     </td>
                 </tr>
             }
             else if (obj is MovimentoSaida)
             {
                 MovimentoSaida o = (MovimentoSaida)obj;
+                saldo -= (Decimal)o.Valor;
                 <tr>
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => o.DataSaida)
@@ -48,10 +54,10 @@
                         S
                     </td>
                     <td class="text-center">
-                        @Html.DisplayFor(modelItem => o.Valor)
+                        R$ @Html.DisplayFor(modelItem => o.Valor)
                     </td>
                     <td class="text-center">
-                        @Html.DisplayFor(modelItem => o.Pessoa.Saldo)
+                        R$ @Html.DisplayFor(modelItem => saldo)
                     </td>
                 </tr>
             }
