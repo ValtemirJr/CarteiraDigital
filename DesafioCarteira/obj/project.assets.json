@@ -8669,23 +8669,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Multisoftware Nstech\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\valte\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Multisoftware Nstech\\Documents\\GitHub\\CarteiraDigital\\DesafioCarteira\\DesafioCarteira.csproj",
+      "projectUniqueName": "C:\\Users\\valte\\OneDrive\\Área de Trabalho\\carteira\\DesafioCarteira\\DesafioCarteira.csproj",
       "projectName": "DesafioCarteira",
-      "projectPath": "C:\\Users\\Multisoftware Nstech\\Documents\\GitHub\\CarteiraDigital\\DesafioCarteira\\DesafioCarteira.csproj",
-      "packagesPath": "C:\\Users\\Multisoftware Nstech\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Multisoftware Nstech\\Documents\\GitHub\\CarteiraDigital\\DesafioCarteira\\obj\\",
+      "projectPath": "C:\\Users\\valte\\OneDrive\\Área de Trabalho\\carteira\\DesafioCarteira\\DesafioCarteira.csproj",
+      "packagesPath": "C:\\Users\\valte\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\valte\\OneDrive\\Área de Trabalho\\carteira\\DesafioCarteira\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Multisoftware Nstech\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\valte\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

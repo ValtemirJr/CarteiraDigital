@@ -76,17 +76,25 @@ namespace DesafioCarteira.Controllers
             if (filtro.Extrato == null)
                 return filtro.Extrato;
 
-            
+            DateTime? diaComeco = filtro.OpcaoDiasExtrato switch
+            {
+                EnumFiltroExtrato.Personalizado => filtro.DataInicio,
+                EnumFiltroExtrato.UltimosSeteDias => DateTime.Now.AddDays(-7),
+                EnumFiltroExtrato.UltimosQuinzeDias => DateTime.Now.AddDays(-15),
+                _ => DateTime.Now.AddDays(-30),
+            };
 
-
+            DateTime? diaFinal = filtro.OpcaoDiasExtrato == EnumFiltroExtrato.Personalizado
+                ? filtro.DataFim
+                : DateTime.Now;
 
             foreach (var movimento in filtro.Extrato)
             {
-                if (movimento is MovimentoEntrada && ((MovimentoEntrada)movimento).DataEntrada >= DateTime.Now.AddDays(-1) && ((MovimentoEntrada)movimento).DataEntrada <= DateTime.Now)
+                if (movimento is MovimentoEntrada && ((MovimentoEntrada)movimento).DataEntrada >= diaComeco && ((MovimentoEntrada)movimento).DataEntrada <= diaFinal)
                 {
                     extratoFiltrado.Add(movimento);
                 }
-                else if (movimento is MovimentoSaida && ((MovimentoSaida)movimento).DataSaida >= DateTime.Now.AddDays(-1) && ((MovimentoSaida)movimento).DataSaida <= DateTime.Now)
+                else if (movimento is MovimentoSaida && ((MovimentoSaida)movimento).DataSaida >= diaComeco && ((MovimentoSaida)movimento).DataSaida <= diaFinal)
                 {
                     extratoFiltrado.Add(movimento);
                 }
