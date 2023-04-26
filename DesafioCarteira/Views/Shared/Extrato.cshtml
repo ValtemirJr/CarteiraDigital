@@ -1,8 +1,12 @@
 ﻿@model IList<Object>
 
-@{ 
+@{
     decimal saldo = 0;
 }
+
+<div>
+    <h6>Saldo anterior: @ViewBag.Saldo</h6>
+</div>
 
 <table class="table table-bordered">
     <thead class="thead-light">
@@ -64,3 +68,7 @@
         }
     </tbody>
 </table>
+
+<div class="d-flex justify-content-end">
+    <h6>Saldo final: R$ @saldo</h6>
+</div>

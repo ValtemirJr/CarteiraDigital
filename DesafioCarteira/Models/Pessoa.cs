@@ -14,7 +14,7 @@ namespace DesafioCarteira.Models
         [EmailAddress(ErrorMessage = "O e-mail não é válido.")]
         public virtual string Email { get; set; }
         public virtual double Salario { get; set; }
-        public virtual double Limite { get; set; }
+        public virtual double? Limite { get; set; }
         [Required(ErrorMessage = "Coloque um valor minimo.")]
         public virtual double? Minimo { get; set; }
         public virtual double? Saldo { get; set; }

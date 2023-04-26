@@ -58,14 +58,31 @@ namespace DesafioCarteira.Controllers
                 await movimentoRepository.Add(movimentoEscolhido);
                 return RedirectToAction(nameof(CriarMovimento), new { pessoaId = movimento.PessoaId });
             }
+            TempData["MensagemErro"] = "Saldo insuficiente!";
             return View(movimento);
         }
 
         public async Task<bool> Saque(Pessoa pessoa, double? valor)
         {
-            if(valor > pessoa.Saldo)
+            if(valor > pessoa.Saldo + pessoa.Limite)
                 return false;
-            pessoa.Saldo = pessoa.Saldo - valor;
+            if (valor > pessoa.Saldo)
+            {
+                double? diferenca = valor - pessoa.Saldo;
+                pessoa.Saldo = 0;
+                if (diferenca <= pessoa.Limite)
+                {
+                    pessoa.Saldo -= diferenca;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                pessoa.Saldo -= valor.Value;
+            }
             await pessoaRepository.Update(pessoa);
             return true;
         }

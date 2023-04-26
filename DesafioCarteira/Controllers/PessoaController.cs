@@ -28,6 +28,7 @@ namespace DesafioCarteira.Controllers
             IList<Pessoa> pessoas = pessoaRepository.FindAll().OrderBy(p => p.Nome).ToList();
             return View(pessoas);
         }
+
         [HttpGet]
         public IActionResult Cadastrar()
         {
@@ -53,11 +54,12 @@ namespace DesafioCarteira.Controllers
             extratoView.Extrato = Merge(pessoa.Entradas, pessoa.Saidas);
             extratoView.PessoaId = pessoaId;
             ViewBag.Nome = pessoa.Nome;
+            ViewBag.Saldo = SomaMovimentos(extratoView.Extrato);
             return View(extratoView);
         }
 
         [HttpPost]
-        public async Task<IActionResult> GeraExtrato(string opcao, DateTime? dataInicio, DateTime? dataFim, int pessoaid)
+        public async Task<IActionResult> GeraExtrato(string opcao, DateTime? dataInicio, DateTime? dataFim, int pessoaid, string tipo_mov)
         {
             Pessoa pessoa = await pessoaRepository.FindByID(pessoaid);
             GeraExtratoViewModel dadosFiltro = new GeraExtratoViewModel();
@@ -66,11 +68,11 @@ namespace DesafioCarteira.Controllers
             dadosFiltro.DataFim = dataFim;
             dadosFiltro.OpcaoDiasExtrato = (EnumFiltroExtrato)Enum.Parse(typeof(EnumFiltroExtrato), opcao);
             dadosFiltro.Extrato = Merge(pessoa.Entradas, pessoa.Saidas);
-            dadosFiltro.Extrato = FiltrarExtrato(dadosFiltro);
+            dadosFiltro.Extrato = FiltrarExtrato(dadosFiltro, tipo_mov);
             return View("GeraExtrato", dadosFiltro);
         }
 
-        public IList<Object> FiltrarExtrato(GeraExtratoViewModel filtro)
+        public IList<Object> FiltrarExtrato(GeraExtratoViewModel filtro, string tipo_mov)
         {
             IList<Object> extratoFiltrado = new List<Object>();
             if (filtro.Extrato == null)
@@ -85,16 +87,16 @@ namespace DesafioCarteira.Controllers
             };
 
             DateTime? diaFinal = filtro.OpcaoDiasExtrato == EnumFiltroExtrato.Personalizado
-                ? filtro.DataFim
+                ? filtro.DataFim.Value.AddDays(1)
                 : DateTime.Now;
 
             foreach (var movimento in filtro.Extrato)
             {
-                if (movimento is MovimentoEntrada && ((MovimentoEntrada)movimento).DataEntrada >= diaComeco && ((MovimentoEntrada)movimento).DataEntrada <= diaFinal)
+                if (movimento is MovimentoEntrada && ((MovimentoEntrada)movimento).DataEntrada >= diaComeco && ((MovimentoEntrada)movimento).DataEntrada <= diaFinal && (tipo_mov == "0" || tipo_mov == "1"))
                 {
                     extratoFiltrado.Add(movimento);
                 }
-                else if (movimento is MovimentoSaida && ((MovimentoSaida)movimento).DataSaida >= diaComeco && ((MovimentoSaida)movimento).DataSaida <= diaFinal)
+                else if (movimento is MovimentoSaida && ((MovimentoSaida)movimento).DataSaida >= diaComeco && ((MovimentoSaida)movimento).DataSaida <= diaFinal && (tipo_mov == "0" || tipo_mov == "2"))
                 {
                     extratoFiltrado.Add(movimento);
                 }
@@ -102,19 +104,17 @@ namespace DesafioCarteira.Controllers
             return extratoFiltrado;
          }
 
-        public double? SomaMovimentos(Pessoa pessoa)
+        public double? SomaMovimentos(IList<Object> extrato)
         {
             double? saldo = 0;
-            if (pessoa.Entradas != null)
+
+            foreach (var obj in extrato)
             {
-                foreach (MovimentoEntrada entrada in pessoa.Entradas)
+                if (obj is MovimentoEntrada entrada)
                 {
                     saldo += entrada.Valor;
                 }
-            }
-            if (pessoa.Saidas != null)
-            {
-                foreach (MovimentoSaida saida in pessoa.Saidas)
+                else if (obj is MovimentoSaida saida)
                 {
                     saldo -= saida.Valor;
                 }
