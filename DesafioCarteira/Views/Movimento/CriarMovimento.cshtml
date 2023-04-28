@@ -5,13 +5,13 @@
     int id = ViewBag.Id == null ? Model.PessoaId : ViewBag.Id;
 }
 
-<h1>Novo Movimento para @ViewBag.Nome</h1>
+<h1>Novo Movimento para @ViewBag.Pessoa.Nome</h1>
 
 <hr />
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CriarMovimento">
+        <form asp-action="CriarMovimento" name="movimento">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="PessoaId" value="@id" type="hidden" />
             <div class="form-group">
@@ -20,23 +20,32 @@
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Valor" class="control-label"></label>
-                <input asp-for="Valor" class="form-control" />
-                <span asp-validation-for="Valor" class="text-danger"></span>
+                <label class="control-label">Valor</label>
+                <input class="form-control" name="valor" />
+                @if (TempData["ValorInvalido"] != null)
+                {
+                    <span class="text-danger">@TempData["ValorInvalido"]</span>
+                }
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" asp-for="TipoMovimento" name="TipoMovimento" id="entrada" value="true">
-                <label class="form-check-label" for="entrada">Entrada</label>
+            <div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="TipoMovimento" name="TipoMovimento" id="entrada" value="true">
+                    <label class="form-check-label" for="entrada">Entrada</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="TipoMovimento" name="TipoMovimento" id="saida" value="false">
+                    <label class="form-check-label" for="saida">Saida</label>
+                </div>
+                @if (TempData["TipoInvalido"] != null)
+                {
+                    <span class="text-danger">@TempData["TipoInvalido"]</span>
+                }
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" asp-for="TipoMovimento" name="TipoMovimento" id="saida" value="false">
-                <label class="form-check-label" for="saida">Saida</label>
-            </div>
-            <div class="form-group">
-                <br />
-                <input type="submit" value="Concluir" class="btn btn-outline-info btn-sm mr-1" />
-                <a asp-controller="Pessoa" asp-action="Lista">Voltar</a>
-            </div>
+                <div class="form-group">
+                    <br />
+                    <input type="submit" value="Concluir" class="btn btn-outline-info btn-sm mr-1" id="btnConfirmar" />
+                    <a asp-controller="Pessoa" asp-action="Lista">Voltar</a>
+                </div>
         </form>
     </div>
 </div>
@@ -45,6 +54,62 @@
     <div class="alert alert-danger">@TempData["MensagemErro"]</div>
 }
 
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Confirmação</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Esta operação resultará em um saldo inferior ao mínimo. Tem certeza que deseja continuar?"
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-outline-danger" id="confirmButton">Sim</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+      document.querySelector('#btnConfirmar').addEventListener('click', function(event) {
+      var valor = parseFloat(document.querySelector('#Valor').value);
+      var saldo = parseFloat('@ViewBag.Pessoa.Saldo');
+      var minimo = parseFloat('@ViewBag.Pessoa.Minimo');
+      var saida = document.querySelector('#saida').checked;
+      var entrada = document.querySelector('#entrada').checked;
+      var 
+
+
+      if (saida && (saldo - valor) < minimo) {
+        event.preventDefault();
+        var modal = new bootstrap.Modal(document.querySelector('#confirmModal'));
+        modal.show();
+        document.querySelector('#confirmButton').addEventListener('click', function () {
+          modal.hide();
+          document.querySelector('form').submit();
+        });
+    
+
+          if (valor < 0) {
+              event.preventDefault();
+              document.getElementById("valor").innerHTML = "TESTE";
+          }
+
+      
+      });
+
+
+
+</script>
+
+
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

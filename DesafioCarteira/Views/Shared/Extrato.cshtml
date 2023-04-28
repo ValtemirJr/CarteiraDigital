@@ -1,12 +1,15 @@
 ﻿@model IList<Object>
 
 @{
-    decimal saldo = 0;
+    double? saldo = ViewBag.Saldo;
 }
 
-<div>
-    <h6>Saldo anterior: @ViewBag.Saldo</h6>
-</div>
+@if (TempData["TagSaldoAnteior"] != null)
+{
+    <div>
+        <h6>Saldo anterior: @ViewBag.Saldo</h6>
+    </div>
+}
 
 <table class="table table-bordered">
     <thead class="thead-light">
@@ -24,7 +27,7 @@
             if (obj is MovimentoEntrada)
             {
                 MovimentoEntrada o = (MovimentoEntrada)obj;
-                saldo += (Decimal)o.Valor;
+                saldo += o.Valor;
                 <tr>
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => o.DataEntrada)
@@ -46,7 +49,7 @@
             else if (obj is MovimentoSaida)
             {
                 MovimentoSaida o = (MovimentoSaida)obj;
-                saldo -= (Decimal)o.Valor;
+                saldo -= o.Valor;
                 <tr>
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => o.DataSaida)

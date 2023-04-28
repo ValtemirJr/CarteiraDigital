@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,6 +25,8 @@ namespace DesafioCarteira
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddNHibernate(Configuration.GetConnectionString("DefaultConnection"));
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("pt-BR");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("pt-BR");
             services.AddControllersWithViews();
         }
 
@@ -33,6 +36,7 @@ namespace DesafioCarteira
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UseBrowserLink();
             }
             else
             {

@@ -14,7 +14,8 @@ namespace DesafioCarteira.Models
         [Required(ErrorMessage = "A descrição é obrigatório.")]
         public string Descricao { get; set; }
         [Required(ErrorMessage = "Coloque um valor minimo.")]
-        [Range(0, int.MaxValue, ErrorMessage = "Coloque um valor maior que 0")]
+        [Range(0, double.MaxValue, ErrorMessage = "Coloque um valor maior que 0")]
         public double Valor { get; set; }
     }
 }
+    

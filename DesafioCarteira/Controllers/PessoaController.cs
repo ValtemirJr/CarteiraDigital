@@ -54,7 +54,7 @@ namespace DesafioCarteira.Controllers
             extratoView.Extrato = Merge(pessoa.Entradas, pessoa.Saidas);
             extratoView.PessoaId = pessoaId;
             ViewBag.Nome = pessoa.Nome;
-            ViewBag.Saldo = SomaMovimentos(extratoView.Extrato);
+            ViewBag.Saldo = 0;
             return View(extratoView);
         }
 
@@ -67,9 +67,26 @@ namespace DesafioCarteira.Controllers
             dadosFiltro.DataInicio = dataInicio;
             dadosFiltro.DataFim = dataFim;
             dadosFiltro.OpcaoDiasExtrato = (EnumFiltroExtrato)Enum.Parse(typeof(EnumFiltroExtrato), opcao);
-            dadosFiltro.Extrato = Merge(pessoa.Entradas, pessoa.Saidas);
-            dadosFiltro.Extrato = FiltrarExtrato(dadosFiltro, tipo_mov);
+            dadosFiltro.Extrato = Merge(pessoa.Entradas, pessoa.Saidas); //Junta TODAS entradas e saidas de um cliente
+            IList<Object> extratoCompleto = dadosFiltro.Extrato; //Armazena o extrato completo da pessoa
+            dadosFiltro.Extrato = FiltrarExtrato(dadosFiltro, tipo_mov); //Filtra entradas e saidas para um periodo pedido pelo cliente
+            if (tipo_mov == "0")
+            {
+                ViewBag.Saldo = CalculaSaldoAnterior(extratoCompleto, dadosFiltro.Extrato);
+                TempData["TagSaldoAnteior"] = true;
+            }
+            else
+            {
+                ViewBag.Saldo = 0;
+            }
+            ViewBag.Nome = pessoa.Nome;
             return View("GeraExtrato", dadosFiltro);
+        }
+
+        public double? CalculaSaldoAnterior(IList<Object> extratoCompleto, IList<Object> extratoFiltrado)
+        {
+            double? saldoAnterior = SomaMovimentos(extratoCompleto) - SomaMovimentos(extratoFiltrado);
+            return saldoAnterior;
         }
 
         public IList<Object> FiltrarExtrato(GeraExtratoViewModel filtro, string tipo_mov)
