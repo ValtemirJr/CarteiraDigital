@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NovaPasta\**" />
+    <Content Remove="NovaPasta\**" />
+    <EmbeddedResource Remove="NovaPasta\**" />
+    <None Remove="NovaPasta\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Mapping\MovimentoEntrada.hbm.xml" />
     <None Remove="Mapping\MovimentoSaida.hbm.xml" />
     <None Remove="Mapping\Pessoa.hbm.xml" />
@@ -30,6 +37,10 @@
     <None Update="hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\imgs\logo_multibank.png" />
   </ItemGroup>
 
 </Project>

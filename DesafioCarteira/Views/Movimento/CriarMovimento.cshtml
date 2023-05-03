@@ -20,32 +20,26 @@
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Valor</label>
-                <input class="form-control" name="valor" />
-                @if (TempData["ValorInvalido"] != null)
-                {
-                    <span class="text-danger">@TempData["ValorInvalido"]</span>
-                }
+                <label asp-for="Valor" class="control-label">Valor</label>
+                <input asp-for="Valor" class="form-control" type="number" step="0.01" id="Valor" />
+                <span asp-validation-for="Valor" class="text-danger"></span>
             </div>
             <div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" asp-for="TipoMovimento" name="TipoMovimento" id="entrada" value="true">
+                    <input class="form-check-input" type="radio" asp-for="TipoMovimento" name="TipoMovimento" id="entrada" value="1">
                     <label class="form-check-label" for="entrada">Entrada</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" asp-for="TipoMovimento" name="TipoMovimento" id="saida" value="false">
+                    <input class="form-check-input" type="radio" asp-for="TipoMovimento" name="TipoMovimento" id="saida" value="0">
                     <label class="form-check-label" for="saida">Saida</label>
                 </div>
-                @if (TempData["TipoInvalido"] != null)
-                {
-                    <span class="text-danger">@TempData["TipoInvalido"]</span>
-                }
             </div>
-                <div class="form-group">
-                    <br />
-                    <input type="submit" value="Concluir" class="btn btn-outline-info btn-sm mr-1" id="btnConfirmar" />
-                    <a asp-controller="Pessoa" asp-action="Lista">Voltar</a>
-                </div>
+            <span id="TipoMovimento" class="text-danger"></span>
+            <div class="form-group">
+                <br />
+                <input type="submit" value="Concluir" class="btn btn-outline-info btn-sm mr-1" id="btnConfirmar" />
+                <a asp-controller="Pessoa" asp-action="Lista">Voltar</a>
+            </div>
         </form>
     </div>
 </div>
@@ -76,40 +70,39 @@
 
 
 <script>
-      document.querySelector('#btnConfirmar').addEventListener('click', function(event) {
-      var valor = parseFloat(document.querySelector('#Valor').value);
-      var saldo = parseFloat('@ViewBag.Pessoa.Saldo');
-      var minimo = parseFloat('@ViewBag.Pessoa.Minimo');
-      var saida = document.querySelector('#saida').checked;
-      var entrada = document.querySelector('#entrada').checked;
-      var 
+    document.querySelector('#btnConfirmar').addEventListener('click', function (event) {
+        var valor = parseFloat(document.querySelector('#Valor').value);
+        var saldo = parseFloat('@ViewBag.Pessoa.Saldo');
+        var minimo = parseFloat('@ViewBag.Pessoa.Minimo');
+        var saida = document.querySelector('#saida').checked;
+        var entrada = document.querySelector('#entrada').checked;
 
+        if (saida && (saldo - valor) < minimo) {
+            event.preventDefault();
+            var modal = new bootstrap.Modal(document.querySelector('#confirmModal'));
+            modal.show();
+            document.querySelector('#confirmButton').addEventListener('click', function () {
+                modal.hide();
+                document.querySelector('form').submit();
+                //Swal.fire({
+                //    title: 'Confirmado',
+                //    icon: 'success',
+                //    text: 'Seu movimento foi registrado',
+                //    timer: 10000,
+                //    showCancelButton: false,
+                //    showConfirmButton: false
+                //})
+                //setTimeout(10000);
+            });
+        }
 
-      if (saida && (saldo - valor) < minimo) {
-        event.preventDefault();
-        var modal = new bootstrap.Modal(document.querySelector('#confirmModal'));
-        modal.show();
-        document.querySelector('#confirmButton').addEventListener('click', function () {
-          modal.hide();
-          document.querySelector('form').submit();
-        });
-    
+        if (!entrada && !saida) {
+            event.preventDefault();
+            document.querySelector('#TipoMovimento').innerHTML = "Escolha um tipo";
+        }
 
-          if (valor < 0) {
-              event.preventDefault();
-              document.getElementById("valor").innerHTML = "TESTE";
-          }
-
-      
-      });
-
-
-
+        
+    });    
 </script>
 
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
 

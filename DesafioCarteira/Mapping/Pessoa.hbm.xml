@@ -14,6 +14,8 @@
 		<property name="Limite" />
 		<property name="Minimo" not-null="true"/>
 		<property name="Saldo" not-null="true"/>
+		<property name="Senha" not-null="true"/>
+		<property name="TipoPessoa"/>
 		<bag name="Entradas"  inverse="true" cascade="all">
 			<key column="PessoaId"/>
 			<one-to-many class="MovimentoEntrada"/>

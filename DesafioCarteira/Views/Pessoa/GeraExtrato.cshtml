@@ -79,9 +79,14 @@
 
 <hr />
 
-<div id="tabela-partial">
-    @await Html.PartialAsync("Extrato", Model.Extrato)
-</div>
+@if (!Model.Extrato.Count.Equals(0)) { 
+    <div id="tabela-partial">
+        @await Html.PartialAsync("Extrato", Model.Extrato)
+    </div>
+}else {
+    <div class="alert alert-danger text-center">SEM REGEGISTROS</div>
+}
+
 
 @section Scripts {
     <script>

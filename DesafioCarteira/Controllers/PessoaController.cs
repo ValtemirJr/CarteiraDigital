@@ -201,5 +201,11 @@ namespace DesafioCarteira.Controllers
             }
             return View(pessoa);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AreaPessoal(int pessoaId)
+        {
+            return View(await pessoaRepository.FindByID(pessoaId));
+        }
     }
 }

@@ -37,13 +37,11 @@ namespace DesafioCarteira.Controllers
         [HttpPost]
         public async Task<IActionResult> CriarMovimento(MovimentoViewModel movimento, string valor)
         {
-            IMovimento movimentoEscolhido = movimento.TipoMovimento ? new MovimentoEntrada() : new MovimentoSaida();
+            IMovimento movimentoEscolhido = movimento.TipoMovimento == Enumerables.EnumTipoMovimento.Entrada ? new MovimentoEntrada() : new MovimentoSaida();
             movimentoEscolhido.Pessoa = await pessoaRepository.FindByID(movimento.PessoaId);
             movimentoEscolhido.Descricao = movimento.Descricao;
-            movimentoEscolhido.Valor = Convert.ToDouble(valor.Replace('.', ','));
+            movimentoEscolhido.Valor = valor == null ? 0 : Convert.ToDouble(valor.Replace('.', ','));
             ViewBag.Pessoa = movimentoEscolhido.Pessoa;
-            
-
 
             bool permitido;
 
@@ -61,9 +59,10 @@ namespace DesafioCarteira.Controllers
                 await movimentoRepository.Add(movimentoEscolhido);
                 return RedirectToAction(nameof(CriarMovimento), new { pessoaId = movimento.PessoaId });
             }
-            TempData["MensagemErro"] = "Saldo insuficiente!";
-            TempData["ValorInvalido"] = "Por favor, insira um valor maior que 0";
-            TempData["TipoInvalido"] = "Escolha um tipo";
+            if(movimentoEscolhido is MovimentoSaida && !permitido)
+            {
+                TempData["MensagemErro"] = "Saldo insuficiente!";
+            }
             return View(movimento);
         }
 

@@ -18,12 +18,16 @@ namespace DesafioCarteira.Models
         [Required(ErrorMessage = "Coloque um valor minimo.")]
         public virtual double? Minimo { get; set; }
         public virtual double? Saldo { get; set; }
+        [Required(ErrorMessage = "Coloque uma senha")]
+        public virtual string Senha { get; set; }
+        public virtual int TipoPessoa { get; set; }
         public virtual IList<MovimentoEntrada> Entradas { get; set; }
         public virtual IList<MovimentoSaida> Saidas { get; set; }
 
         public Pessoa()
         {
             this.Saldo = 0;
+            this.Limite = 0;
         }
     }
 }
