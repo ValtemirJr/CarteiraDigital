@@ -712,3 +712,4 @@ C:\Users\valte\OneDrive\Área de Trabalho\carteira\DesafioCarteira\obj\Debug\net
 C:\Users\valte\OneDrive\Área de Trabalho\carteira\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Shared\Extrato.cshtml.g.cs
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\bin\Debug\net5.0\Microsoft.VisualStudio.Web.BrowserLink.dll
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Pessoa\AreaPessoal.cshtml.g.cs
+C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Login\Index.cshtml.g.cs

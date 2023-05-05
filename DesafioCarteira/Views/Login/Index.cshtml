@@ -1,0 +1,43 @@
+﻿@model DesafioCarteira.ViewModel.LoginViewModel
+
+<div class="container text-center w-50">
+    <form data-bind="submit: handleSubmit">
+        <img class="mb-4" src="/imgs/logo_multibank.png" alt="">
+
+        <div class="form-group">
+            <label for="Email" class="sr-only">Email:</label>
+            <input type="text" id="Email"class="form-control" placeholder="Seu email" data-bind="value: Email" />
+        </div>
+
+        <label class="sr-only">Password:</label>
+        <input type="password" class="form-control mt-2" placeholder="Senha" data-bind="value: Password" />
+        @*<span data-bind="validationMessage: password" class="text-danger"></span>*@
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> Lembrar de mim
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Confimar</button>
+    </form>
+</div>          
+
+<script>
+    var LoginViewModel = function () {
+        var self = this;
+
+        self.Email = ko.observable("").extend({
+                required: true,
+                email: true
+        });
+
+        self.Password = ko.observable("");
+
+        self.handleSubmit = function () {
+            console.log(self.Email() + " " + self.Password());
+        }
+    }
+
+    ko.applyBindings(new LoginViewModel());
+
+</script>
