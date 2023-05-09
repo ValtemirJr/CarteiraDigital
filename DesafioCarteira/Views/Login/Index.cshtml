@@ -1,43 +1,63 @@
 ﻿@model DesafioCarteira.ViewModel.LoginViewModel
 
 <div class="container text-center w-50">
-    <form data-bind="submit: handleSubmit">
+    <form id="loginForm" data-bind="submit: handleSubmit" method="post">
         <img class="mb-4" src="/imgs/logo_multibank.png" alt="">
 
         <div class="form-group">
             <label for="Email" class="sr-only">Email:</label>
-            <input type="text" id="Email"class="form-control" placeholder="Seu email" data-bind="value: Email" />
+            <input type="text" id="Email" class="form-control" placeholder="Seu email" data-bind="value: Email" name="Email" />
         </div>
 
-        <label class="sr-only">Password:</label>
-        <input type="password" class="form-control mt-2" placeholder="Senha" data-bind="value: Password" />
-        @*<span data-bind="validationMessage: password" class="text-danger"></span>*@
+        <div class="form-group">
+            <label class="sr-only">Password:</label>
+            <input type="password" class="form-control mt-2" placeholder="Senha" data-bind="value: Senha" name="Senha"/>
+        </div>
 
         <div class="checkbox mb-3">
             <label>
                 <input type="checkbox" value="remember-me"> Lembrar de mim
             </label>
         </div>
+
         <button class="btn btn-lg btn-primary btn-block" type="submit">Confimar</button>
     </form>
-</div>          
+</div>
 
 <script>
+    ko.validation.init({
+        errorClass: "text-danger"
+    });
+
     var LoginViewModel = function () {
         var self = this;
 
-        self.Email = ko.observable("").extend({
-                required: true,
-                email: true
+        self.Email = ko.observable().extend({
+            required: { message: 'Por favor, preencha o seu e-mail.' },
+            email: { message: 'Por favor, insira um endereço de e-mail válido.' }
         });
 
-        self.Password = ko.observable("");
+        self.Senha = ko.observable().extend({
+            required: { message: 'Por favor, preencha o sua senha.' },
+            minLength: {
+                params: 8,
+                message: 'O nome deve ter pelo menos 8 caracteres.'
+            }
+    });
 
-        self.handleSubmit = function () {
-            console.log(self.Email() + " " + self.Password());
+        self.handleSubmit = function (formElement) {
+            var errors = ko.validation.group(self);
+            if (errors().length > 0) {
+                errors.showAllMessages();
+                console.log(formElement);
+                return;
+            }
+            console.log(formElement);
+            formElement.submit();
         }
     }
 
+    var loginForm = document.querySelector("#loginForm");
     ko.applyBindings(new LoginViewModel());
 
 </script>
