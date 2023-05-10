@@ -6,20 +6,20 @@
 
         <div class="form-group">
             <label for="Email" class="sr-only">Email:</label>
-            <input type="text" id="Email" class="form-control" placeholder="Seu email" data-bind="value: Email" name="Email" />
+            <input type="text" id="Email" class="form-control" placeholder="Seu email" data-bind="value: Email" name="Email" value="@Model.Email" />
         </div>
 
         <div class="form-group">
             <label class="sr-only">Password:</label>
-            <input type="password" class="form-control mt-2" placeholder="Senha" data-bind="value: Senha" name="Senha"/>
+            <input type="password" class="form-control mt-2" placeholder="Senha" data-bind="value: Senha" name="Senha" value="@Model.Senha" />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 
-        <div class="checkbox mb-3">
+        <div class="checkbox">
             <label>
                 <input type="checkbox" value="remember-me"> Lembrar de mim
             </label>
         </div>
-
         <button class="btn btn-lg btn-primary btn-block" type="submit">Confimar</button>
     </form>
 </div>
@@ -31,7 +31,6 @@
 
     var LoginViewModel = function () {
         var self = this;
-
         self.Email = ko.observable().extend({
             required: { message: 'Por favor, preencha o seu e-mail.' },
             email: { message: 'Por favor, insira um endereço de e-mail válido.' }
@@ -39,25 +38,18 @@
 
         self.Senha = ko.observable().extend({
             required: { message: 'Por favor, preencha o sua senha.' },
-            minLength: {
-                params: 8,
-                message: 'O nome deve ter pelo menos 8 caracteres.'
-            }
-    });
+        });
+
+        self.isValid = ko.computed(function () { return !ko.validation.group(self)().length; });
 
         self.handleSubmit = function (formElement) {
-            var errors = ko.validation.group(self);
-            if (errors().length > 0) {
-                errors.showAllMessages();
-                console.log(formElement);
+            if (!self.isValid()) {
                 return;
             }
-            console.log(formElement);
             formElement.submit();
         }
     }
 
     var loginForm = document.querySelector("#loginForm");
-    ko.applyBindings(new LoginViewModel());
-
+    ko.applyBindings(new LoginViewModel(), loginForm);
 </script>

@@ -9,7 +9,7 @@
 			</generator>
 		</id>
 		<property name="Nome" not-null="true" />
-		<property name="Email" not-null="true" />
+		<property name="Email" not-null="true" unique="true"/>
 		<property name="Salario" />
 		<property name="Limite" />
 		<property name="Minimo" not-null="true"/>

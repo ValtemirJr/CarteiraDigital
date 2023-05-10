@@ -1,5 +1,8 @@
-﻿using DesafioCarteira.ViewModel;
+﻿using DesafioCarteira.Models;
+using DesafioCarteira.Repository;
+using DesafioCarteira.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +12,25 @@ namespace DesafioCarteira.Controllers
 {
     public class LoginController : Controller
     {
+        private readonly PessoaRepository pessoaRepository;
+        public LoginController(ISession session) => pessoaRepository = new PessoaRepository(session);
+
         public IActionResult Index()
         {
-            return View();
+            LoginViewModel login = new LoginViewModel();
+            return View(login);
         }
 
         [HttpPost]
         public IActionResult Index(LoginViewModel login)
         {
-            if (ModelState.IsValid)
+            Pessoa pessoa = pessoaRepository.FindByEmail(login.Email);
+            if (pessoa == null || pessoa.Senha != login.Senha)
             {
+                ModelState.AddModelError("Email", "Usuário ou senha inválidos.");
                 return View(login);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-
-            }
+            return RedirectToAction("AreaPessoal", "Pessoa", new { pessoaId = pessoa.PessoaId }); 
         }
     }
 }

@@ -36,6 +36,14 @@ namespace DesafioCarteira.Repository
 
         public async Task<Pessoa> FindByID(int id) => await _session.GetAsync<Pessoa>(id);
 
+        public Pessoa FindByEmail(string email)
+        {
+            IQuery query = _session.CreateQuery("FROM Pessoa WHERE Email = :email");
+            query.SetParameter("email", email);
+            var resultado = query.UniqueResult<Pessoa>();
+            return resultado;
+        }
+
         public Pessoa FindByIDPessoa(int id)
         {
             Pessoa p =  _session.Get<Pessoa>(id);
