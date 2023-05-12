@@ -32,6 +32,20 @@
 <div class="row">
     <div class="col-md-4">
         <div class="d-flex justify-content-center">
+            <a class="btn btn-outline-dark btn-card" asp-controller="Pessoa" asp-action="Lista" asp-route-pessoaId="@Model.PessoaId">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <img src="~/imgs/pessoas.png" class="w-50" />
+                    </div>
+                    <div class="card-footer">
+                        Clientes
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="d-flex justify-content-center">
             <a class="btn btn-outline-dark btn-card" asp-controller="Movimento" asp-action="CriarMovimento" asp-route-pessoaId="@Model.PessoaId">
                 <div class="card text-center">
                     <div class="card-body">
@@ -58,6 +72,8 @@
             </a>
         </div>
     </div>
+</div>
+<div class="row pt-4">
     <div class="col-md-4">
         <div class="d-flex justify-content-center">
             <a class="btn btn-outline-dark btn-card" asp-controller="Pessoa" asp-action="Update" asp-route-pessoaId="@Model.PessoaId">

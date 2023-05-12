@@ -13,9 +13,15 @@ namespace DesafioCarteira.Controllers
 {
     public class PessoaController : Controller
     {
+        private readonly Microsoft.AspNetCore.Http.IHttpContextAccessor _contxt;
         private readonly PessoaRepository pessoaRepository;
-        public PessoaController(ISession session) => pessoaRepository = new PessoaRepository(session);
+        public PessoaController(ISession session, Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor) 
+        { 
+            pessoaRepository = new PessoaRepository(session);
+            _contxt = httpContextAccessor;
+        }
 
+        
         [HttpGet]
         public IActionResult Index()
         {
@@ -205,7 +211,10 @@ namespace DesafioCarteira.Controllers
         [HttpGet]
         public async Task<IActionResult> AreaPessoal(int pessoaId)
         {
-            return View(await pessoaRepository.FindByID(pessoaId));
+            Pessoa pessoa = await pessoaRepository.FindByID(pessoaId);
+            if (pessoa.Nome == "Admin")
+                return View("AreaPessoalAdmin", pessoa);
+            return View(pessoa);
         }
     }
 }

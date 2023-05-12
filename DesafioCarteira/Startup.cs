@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DesafioCarteira
@@ -28,6 +29,14 @@ namespace DesafioCarteira
             services.AddNHibernate(Configuration.GetConnectionString("DefaultConnection"));
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("pt-BR");
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("pt-BR");
+            services.AddSingleton<Microsoft.AspNetCore.Http.IHttpContextAccessor, Microsoft.AspNetCore.Http.HttpContextAccessor>();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(1000);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             services.AddControllersWithViews();
         }
 
@@ -57,6 +66,8 @@ namespace DesafioCarteira
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthorization();
 
