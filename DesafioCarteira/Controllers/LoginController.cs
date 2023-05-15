@@ -44,5 +44,11 @@ namespace DesafioCarteira.Controllers
             _contxt.HttpContext.Session.SetString("User", jsonString);
             return RedirectToAction("AreaPessoal", "Pessoa", new { pessoaId = pessoa.PessoaId }); 
         }
+
+        public IActionResult Logout()
+        {
+            _contxt.HttpContext.Session.Remove("User");
+            return RedirectToAction("Index", "Login");
+        }
     }
 }

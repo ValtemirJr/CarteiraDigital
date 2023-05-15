@@ -7,7 +7,7 @@
 <h1>Extrato de @ViewBag.Nome</h1>
 
 <div class="form-group" id="filtro-form">
-    <a asp-action="Lista" class="btn btn-link btn-sm">Voltar</a>
+    <a asp-controller="Pessoa" asp-action="AreaPessoal" asp-route-pessoaId="@Model.PessoaId">Voltar</a>
 </div>
 
 <!-- Button trigger modal -->

@@ -1,18 +1,5 @@
 ﻿@model DesafioCarteira.Models.Pessoa
-@using Microsoft.AspNetCore.Http;
-@using System.Text.Json;
 
-@{
-    ViewData["Title"] = "AreaPessoal";
-}
-
-@inject IHttpContextAccessor HttpContextAccessor
-
-@{ var User = JsonSerializer.Deserialize<Pessoa>(HttpContextAccessor.HttpContext.Session.GetString("User"));
-
-    if (User.Nome != "Admin")
-        Layout = "~/Views/Shared/_LayoutCliente.cshtml";
-}
 
 <link href="~/css/areaPessoal.css" rel="stylesheet" />
 

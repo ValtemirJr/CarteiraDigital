@@ -718,5 +718,4 @@ C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\b
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
-C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Shared\_LayoutCliente.cshtml.g.cs
 C:\Users\Multisoftware Nstech\Documents\GitHub\CarteiraDigital\DesafioCarteira\obj\Debug\net5.0\Razor\Views\Pessoa\AreaPessoalAdmin.cshtml.g.cs

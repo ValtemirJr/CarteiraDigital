@@ -2,11 +2,13 @@
 using DesafioCarteira.Models;
 using DesafioCarteira.Repository;
 using DesafioCarteira.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DesafioCarteira.Controllers
@@ -15,7 +17,7 @@ namespace DesafioCarteira.Controllers
     {
         private readonly Microsoft.AspNetCore.Http.IHttpContextAccessor _contxt;
         private readonly PessoaRepository pessoaRepository;
-        public PessoaController(ISession session, Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor) 
+        public PessoaController(NHibernate.ISession session, Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor) 
         { 
             pessoaRepository = new PessoaRepository(session);
             _contxt = httpContextAccessor;
@@ -32,6 +34,11 @@ namespace DesafioCarteira.Controllers
         public IActionResult Lista()
         {
             IList<Pessoa> pessoas = pessoaRepository.FindAll().OrderBy(p => p.Nome).ToList();
+            Pessoa admin = pessoas.FirstOrDefault(p => p.Nome == "Admin");
+            if (admin != null)
+            {
+                pessoas.Remove(admin);
+            }
             return View(pessoas);
         }
 
@@ -44,10 +51,20 @@ namespace DesafioCarteira.Controllers
         [HttpPost]
         public async Task<IActionResult> Cadastrar(Pessoa pessoa)
         {
+            string userJson = _contxt.HttpContext.Session.GetString("User");
+            Pessoa user = null;
+            if (!string.IsNullOrEmpty(userJson))
+            {
+                user = JsonSerializer.Deserialize<Pessoa>(userJson);
+            }
             if (ModelState.IsValid)
             {
                 await pessoaRepository.Add(pessoa);
-                return RedirectToAction(nameof(Lista));              
+                if(user != null && user.Nome == "Admin")
+                {
+                    return RedirectToAction("AreaPessoal", new { pessoaId = user.PessoaId });
+                }
+                return RedirectToAction("Index", "Login");              
             }
             return View(pessoa);
         }
@@ -186,7 +203,17 @@ namespace DesafioCarteira.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int pessoaId)
         {
+            string userJson = _contxt.HttpContext.Session.GetString("User");
+            Pessoa user = null;
+            if (!string.IsNullOrEmpty(userJson))
+            {
+                user = JsonSerializer.Deserialize<Pessoa>(userJson);
+            }
             await pessoaRepository.Remove(pessoaId);
+            if (user.Nome != "Admin" || user.PessoaId == pessoaId)
+            {
+                return RedirectToAction("Logout", "Login");
+            }
             return RedirectToAction(nameof(Lista));          
         }
 
@@ -198,12 +225,13 @@ namespace DesafioCarteira.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(Pessoa pessoa)
+        public async Task<IActionResult> Update(Pessoa pessoa, string NovaSenha)
         {
             if (ModelState.IsValid)
             {
+                pessoa.Senha = NovaSenha;
                 await pessoaRepository.Update(pessoa);
-                return RedirectToAction(nameof(Lista));                
+                return RedirectToAction("AreaPessoal", "Pessoa", new { pessoaId = pessoa.PessoaId });
             }
             return View(pessoa);
         }

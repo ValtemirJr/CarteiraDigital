@@ -1,17 +1,31 @@
 ﻿@model IEnumerable<DesafioCarteira.Models.Pessoa>
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using System.Text.Json;
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Lista";
+    string userJson = HttpContextAccessor.HttpContext.Session.GetString("User");
+    Pessoa pessoa = null;
+    if (!string.IsNullOrEmpty(userJson))
+    {
+        pessoa = JsonSerializer.Deserialize<Pessoa>(userJson);
+    }
 }
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 
 <div class="container">
-    <h1>Clientes</h1>
-    <p><a asp-action="Cadastrar" class="btn btn-outline-success btn-sm">Novo Cliente</a></p>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Clientes</h1>
+        <a class="btn btn-link" asp-controller="Pessoa" asp-action="AreaPessoal" asp-route-pessoaId="@pessoa.PessoaId">Voltar</a>
+    </div>
+
+
     <input class="form-control" id="myInput" type="text" placeholder="Pesquisar cliente...">
-    <br>
+    <br />
     <table class="table table-hover table-striped table-bordered">
         <thead class="thead-light">
             <tr>
@@ -30,59 +44,60 @@
         <tbody id="myTable">
             @foreach (var item in Model)
             {
-             <tr>
-                 <td>
-                     @Html.DisplayFor(modelItem => item.Nome)
-                     @if (item.Saldo < item.Minimo)
-                     {
-                         <p class="text-danger m-0" style="font-size: 12px;">Saldo abaixo do minimo</p>
-                     }
-                 </td>
-                 <td>
-                     R$ @String.Format("{0:N2}", item.Minimo)
-                 </td>
-                 <td>
-                     R$ @String.Format("{0:N2}", item.Saldo)
-                 </td>
-                 <td>
-                     <div class="row justify-content-center">
-                         <a asp-controller="Movimento" asp-action="CriarMovimento" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Novo movimento</a>
-                         <a asp-controller="Pessoa" asp-action="Update" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Atualizar</a>
-                         <a asp-controller="Pessoa" asp-action="GeraExtrato" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Extrato</a>
-                         <!-- Button trigger modal -->
-                         <button type="button" class="btn btn-outline-danger btn-sm mr-1" data-toggle="modal" data-target="#DeleteModal-@item.PessoaId">
-                             Excluir
-                         </button>
-                         <!-- Modal -->
-                         <div class="modal fade" id="DeleteModal-@item.PessoaId" tabindex="-1" role="dialog" aria-labelledby="DeleteModalCenterTitle" aria-hidden="true">
-                             <div class="modal-dialog modal-dialog-centered" role="document">
-                                 <div class="modal-content">
-                                     <div class="modal-header">
-                                         <h5 class="modal-title" id="DeleteModalCenterTitle">Excluir cliente</h5>
-                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                             <span aria-hidden="true">&times;</span>
-                                         </button>
-                                     </div>
-                                     <div class="modal-body">
-                                         Tem certeza que deseja excluir @item.Nome?
-                                     </div>
-                                     <div class="modal-footer">
-                                         <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-dismiss="modal">Cancelar</button>
-                                         <form asp-controller="Pessoa" asp-action="Delete" asp-route-pessoaId="@item.PessoaId">
-                                             <button type="submit" class="btn btn-outline-danger btn-sm mr-1">Sim</button>
-                                         </form>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </td>
-             </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                        @if (item.Saldo < item.Minimo)
+                        {
+                            <p class="text-danger m-0" style="font-size: 12px;">Saldo abaixo do minimo</p>
+                        }
+                    </td>
+                    <td>
+                        R$ @String.Format("{0:N2}", item.Minimo)
+                    </td>
+                    <td>
+                        R$ @String.Format("{0:N2}", item.Saldo)
+                    </td>
+                    <td>
+                        <div class="row justify-content-center">
+                            <a asp-controller="Movimento" asp-action="CriarMovimento" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Novo movimento</a>
+                            <a asp-controller="Pessoa" asp-action="Update" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Atualizar</a>
+                            <a asp-controller="Pessoa" asp-action="GeraExtrato" asp-route-pessoaId="@item.PessoaId" class="btn btn-outline-info btn-sm mr-1">Extrato</a>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-outline-danger btn-sm mr-1" data-toggle="modal" data-target="#DeleteModal-@item.PessoaId">
+                                Excluir
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="DeleteModal-@item.PessoaId" tabindex="-1" role="dialog" aria-labelledby="DeleteModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="DeleteModalCenterTitle">Excluir cliente</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Tem certeza que deseja excluir @item.Nome?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-dismiss="modal">Cancelar</button>
+                                            <form asp-controller="Pessoa" asp-action="Delete" asp-route-pessoaId="@item.PessoaId">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm mr-1">Sim</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
     <div id="noResults" class="alert alert-warning" role="alert" style="display:none;">Nenhum cliente foi encontrado</div>
 </div>
+<br />
 
 
 @section Scripts {
@@ -94,9 +109,9 @@
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
                 if ($("#myTable tr:visible").length == 0) {
-                    $("#noResults").show(); 
+                    $("#noResults").show();
                 } else {
-                    $("#noResults").hide(); 
+                    $("#noResults").hide();
                 }
             });
         });

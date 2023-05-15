@@ -1,35 +1,28 @@
 ﻿@model DesafioCarteira.Models.Pessoa
-@using Microsoft.AspNetCore.Http;
-@using System.Text.Json;
-
-@{
-    ViewData["Title"] = "AreaPessoal";
-}
-
-@inject IHttpContextAccessor HttpContextAccessor
-
-@{ var User = JsonSerializer.Deserialize<Pessoa>(HttpContextAccessor.HttpContext.Session.GetString("User"));
-
-    if (User.Nome != "Admin")
-        Layout = "~/Views/Shared/_LayoutCliente.cshtml";
-}
 
 <link href="~/css/areaPessoal.css" rel="stylesheet" />
 
 <div class="row">
     <div class="text-left w-25 texto-bv col-md-6">Bem Vindo de volta,<br />@Model.Nome</div>
-    <div class="texto-bv col-md-6 text-right mt-auto">
-        Saldo: R$ @Model.Saldo?.ToString("F2")<br />
-        @if (Model.Saldo < Model.Minimo)
-        {
-            <p class="text-danger m-0" style="font-size: 12px;">Saldo abaixo do minimo</p>
-        }
-    </div>
 </div>
 
 <hr class="my-4">
 
 <div class="row">
+    <div class="col-md-4">
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-outline-dark btn-card" asp-controller="Pessoa" asp-action="Cadastrar">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <img src="~/imgs/cadastro.png" class="w-50" />
+                    </div>
+                    <div class="card-footer">
+                        Cadastrar Cliente
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
     <div class="col-md-4">
         <div class="d-flex justify-content-center">
             <a class="btn btn-outline-dark btn-card" asp-controller="Pessoa" asp-action="Lista" asp-route-pessoaId="@Model.PessoaId">
@@ -44,36 +37,6 @@
             </a>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="d-flex justify-content-center">
-            <a class="btn btn-outline-dark btn-card" asp-controller="Movimento" asp-action="CriarMovimento" asp-route-pessoaId="@Model.PessoaId">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <img src="~/imgs/money-bag.png" class="w-50" />
-                    </div>
-                    <div class="card-footer">
-                        Fazer Movimentação
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="d-flex justify-content-center">
-            <a class="btn btn-outline-dark btn-card" asp-controller="Pessoa" asp-action="GeraExtrato" asp-route-pessoaId="@Model.PessoaId">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <img src="~/imgs/img_extrato.png" class="w-50" />
-                    </div>
-                    <div class="card-footer">
-                        Extrato
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-<div class="row pt-4">
     <div class="col-md-4">
         <div class="d-flex justify-content-center">
             <a class="btn btn-outline-dark btn-card" asp-controller="Pessoa" asp-action="Update" asp-route-pessoaId="@Model.PessoaId">

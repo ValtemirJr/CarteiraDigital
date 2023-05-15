@@ -38,7 +38,7 @@
             <div class="form-group">
                 <br />
                 <input type="submit" value="Concluir" class="btn btn-outline-info btn-sm mr-1" id="btnConfirmar" />
-                <a asp-controller="Pessoa" asp-action="Lista">Voltar</a>
+                <a asp-controller="Pessoa" asp-action="AreaPessoal" asp-route-pessoaId="@id">Voltar</a>
             </div>
         </form>
     </div>
@@ -58,7 +58,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Esta operação resultará em um saldo inferior ao mínimo. Tem certeza que deseja continuar?"
+                Esta operação resultará em um saldo inferior ao mínimo. Tem certeza que deseja continuar?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancelar</button>
