@@ -12,16 +12,16 @@
         <div class="form-group">
             <label class="sr-only">Password:</label>
             <input type="password" class="form-control mt-2" placeholder="Senha" data-bind="value: Senha" name="Senha" value="@Model.Senha" />
-            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
-
+        <span asp-validation-for="Email" class="text-danger"></span>
         <div class="checkbox">
             <label>
-                <input type="checkbox" value="remember-me"> Lembrar de mim
+                <input type="checkbox" id="rememberMeCheckbox" value="remember-me"> Lembrar de mim
             </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Confimar</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Confirmar</button>
     </form>
+
 </div>
 
 <script>
@@ -37,18 +37,21 @@
         });
 
         self.Senha = ko.observable().extend({
-            required: { message: 'Por favor, preencha o sua senha.' },
+            required: { message: 'Por favor, preencha a sua senha.' },
         });
 
-        self.isValid = ko.computed(function () { return !ko.validation.group(self)().length; });
+        self.isValid = ko.computed(function () {
+            return !ko.validation.group(self)().length;
+        });
 
         self.handleSubmit = function (formElement) {
             if (!self.isValid()) {
+                ko.validation.group(self).showAllMessages(true);
                 return;
             }
             formElement.submit();
-        }
-    }
+        };
+    };
 
     var loginForm = document.querySelector("#loginForm");
     ko.applyBindings(new LoginViewModel(), loginForm);

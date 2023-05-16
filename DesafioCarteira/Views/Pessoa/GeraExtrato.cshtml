@@ -1,14 +1,34 @@
 ﻿@model DesafioCarteira.ViewModel.GeraExtratoViewModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using System.Text.Json;
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Extrato";
+    int id = ViewBag.Id == null ? Model.PessoaId : ViewBag.Id;
+    string userJson = HttpContextAccessor.HttpContext.Session.GetString("User");
+    Pessoa pessoa = null;
+    if (!string.IsNullOrEmpty(userJson))
+    {
+        pessoa = JsonSerializer.Deserialize<Pessoa>(userJson);
+    }
 }
 
 <h1>Extrato de @ViewBag.Nome</h1>
 
-<div class="form-group" id="filtro-form">
-    <a asp-controller="Pessoa" asp-action="AreaPessoal" asp-route-pessoaId="@Model.PessoaId">Voltar</a>
-</div>
+
+@if (pessoa != null && pessoa.Nome == "Admin")
+{
+    <div class="form-group" id="filtro-form">
+        <a asp-controller="Pessoa" asp-action="Lista">Voltar</a>
+    </div>
+}
+else
+{
+    <div class="form-group" id="filtro-form">
+        <a asp-controller="Pessoa" asp-action="AreaPessoal" asp-route-pessoaId="@Model.PessoaId">Voltar</a>
+    </div>
+}
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-outline-info btn-sm mr-1 w-100" data-toggle="modal" data-target="#filtro">Filtrar</button>
@@ -79,11 +99,14 @@
 
 <hr />
 
-@if (!Model.Extrato.Count.Equals(0)) { 
+@if (!Model.Extrato.Count.Equals(0))
+{
     <div id="tabela-partial">
         @await Html.PartialAsync("Extrato", Model.Extrato)
     </div>
-}else {
+}
+else
+{
     <div class="alert alert-danger text-center">SEM REGEGISTROS</div>
 }
 

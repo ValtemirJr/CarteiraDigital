@@ -13,8 +13,6 @@
     }
 }
 <h1>Cadastrar</h1>
-
-<h4>Pessoa</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -42,14 +40,14 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Cadastrar" class="btn btn-outline-info btn-sm mr-1" /> &emsp;
-           @if (pessoa != null && pessoa.Nome == "Admin")
-            {
-                <a asp-controller="Pessoa" asp-action="AreaPessoal" asp-route-pessoaId="@pessoa.PessoaId" class="btn btn-link btn-sm">Voltar</a>
-            }
-            else {
-                <a asp-controller="Login" asp-action="Index" class="btn btn-link btn-sm">Voltar</a>
-            }
-            
+               @if (pessoa != null && pessoa.Nome == "Admin")
+                {
+                    <a asp-controller="Pessoa" asp-action="AreaPessoal" asp-route-pessoaId="@pessoa.PessoaId" class="btn btn-link btn-sm">Voltar</a>
+                }
+                else
+                {
+                    <a asp-controller="Login" asp-action="Index" class="btn btn-link btn-sm">Voltar</a>
+                }
             </div>
         </form>
     </div>

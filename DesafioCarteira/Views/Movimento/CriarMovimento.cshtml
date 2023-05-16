@@ -1,8 +1,17 @@
 ﻿@model MovimentoViewModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using System.Text.Json;
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Criar Movimento";
     int id = ViewBag.Id == null ? Model.PessoaId : ViewBag.Id;
+    string userJson = HttpContextAccessor.HttpContext.Session.GetString("User");
+    Pessoa pessoa = null;
+    if (!string.IsNullOrEmpty(userJson))
+    {
+        pessoa = JsonSerializer.Deserialize<Pessoa>(userJson);
+    }
 }
 
 <h1>Novo Movimento para @ViewBag.Pessoa.Nome</h1>
@@ -38,7 +47,14 @@
             <div class="form-group">
                 <br />
                 <input type="submit" value="Concluir" class="btn btn-outline-info btn-sm mr-1" id="btnConfirmar" />
+               @if (pessoa != null && pessoa.Nome == "Admin")
+               {
+                   <a asp-controller="Pessoa" asp-action="Lista">Voltar</a>
+               }
+               else
+               {
                 <a asp-controller="Pessoa" asp-action="AreaPessoal" asp-route-pessoaId="@id">Voltar</a>
+               }
             </div>
         </form>
     </div>
@@ -90,8 +106,8 @@
         if (!entrada && !saida) {
             event.preventDefault();
             document.querySelector('#TipoMovimento').innerHTML = "Escolha um tipo";
-        }        
-    });    
+        }
+    });
 </script>
 
 

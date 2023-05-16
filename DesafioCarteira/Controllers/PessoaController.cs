@@ -57,17 +57,26 @@ namespace DesafioCarteira.Controllers
             {
                 user = JsonSerializer.Deserialize<Pessoa>(userJson);
             }
+
+            Pessoa emailEmUso = pessoaRepository.FindByEmail(pessoa.Email);
+            if (emailEmUso != null)
+            {
+                ModelState.AddModelError("Email", "Este e-mail já está em uso.");
+            }
+
             if (ModelState.IsValid)
             {
                 await pessoaRepository.Add(pessoa);
-                if(user != null && user.Nome == "Admin")
+                if (user != null && user.Nome == "Admin")
                 {
                     return RedirectToAction("AreaPessoal", new { pessoaId = user.PessoaId });
                 }
-                return RedirectToAction("Index", "Login");              
+                return RedirectToAction("Index", "Login");
             }
+
             return View(pessoa);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> GeraExtrato(int pessoaId)

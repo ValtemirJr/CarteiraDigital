@@ -1,7 +1,17 @@
 ﻿@model DesafioCarteira.Models.Pessoa
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using System.Text.Json;
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Atualizar Pessoa " + @Model.Nome;
+    int id = ViewBag.Id == null ? Model.PessoaId : ViewBag.Id;
+    string userJson = HttpContextAccessor.HttpContext.Session.GetString("User");
+    Pessoa pessoa = null;
+    if (!string.IsNullOrEmpty(userJson))
+    {
+        pessoa = JsonSerializer.Deserialize<Pessoa>(userJson);
+    }
 }
 
 <h4>Atualizar @Model.Nome</h4>
@@ -115,7 +125,14 @@
             <br />
             <div class="form-group">
                 <input type="submit" value="Salvar" class="btn btn-outline-info btn-sm" /> &emsp;
-                <a asp-controller="Pessoa" asp-action="AreaPessoal" asp-route-pessoaId="@Model.PessoaId">Voltar</a>
+                @if (pessoa != null && pessoa.Nome == "Admin" && Model.Nome != "Admin")
+                {
+                    <a asp-controller="Pessoa" asp-action="Lista">Voltar</a>
+                }
+                else
+                {
+                    <a asp-controller="Pessoa" asp-action="AreaPessoal" asp-route-pessoaId="@Model.PessoaId">Voltar</a>
+                }
             </div>
         </form>
     </div>
