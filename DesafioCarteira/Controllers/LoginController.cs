@@ -33,13 +33,13 @@ namespace DesafioCarteira.Controllers
         public IActionResult Index(LoginViewModel login)
         {
             Pessoa pessoa = pessoaRepository.FindByEmail(login.Email);
-            pessoa.Entradas = null;
-            pessoa.Saidas = null;
             if (pessoa == null || pessoa.Senha != login.Senha)
             {
                 ModelState.AddModelError("Email", "Usuário ou senha inválidos.");
                 return View(login);
             }
+            pessoa.Entradas = null;
+            pessoa.Saidas = null;
             string jsonString = JsonSerializer.Serialize(pessoa);
             _contxt.HttpContext.Session.SetString("User", jsonString);
             return RedirectToAction("AreaPessoal", "Pessoa", new { pessoaId = pessoa.PessoaId }); 

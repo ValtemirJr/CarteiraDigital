@@ -234,16 +234,27 @@ namespace DesafioCarteira.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(Pessoa pessoa, string NovaSenha)
-        {
+        public async Task<IActionResult> Update(Pessoa pessoa) { 
+                 
             if (ModelState.IsValid)
             {
-                pessoa.Senha = NovaSenha;
+                if (!string.IsNullOrEmpty(pessoa.Email))
+                {
+                    Pessoa emailEmUso = pessoaRepository.FindByEmail(pessoa.Email);
+                    if (emailEmUso != null && emailEmUso.PessoaId != pessoa.PessoaId)
+                    {
+                        ModelState.AddModelError("Email", "Este e-mail já está em uso.");
+                        return View(pessoa);
+                    }
+                }
+
                 await pessoaRepository.Update(pessoa);
                 return RedirectToAction("AreaPessoal", "Pessoa", new { pessoaId = pessoa.PessoaId });
             }
+
             return View(pessoa);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> AreaPessoal(int pessoaId)
@@ -253,5 +264,6 @@ namespace DesafioCarteira.Controllers
                 return View("AreaPessoalAdmin", pessoa);
             return View(pessoa);
         }
+
     }
 }

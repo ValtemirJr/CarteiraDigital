@@ -75,16 +75,9 @@
                 <div class="card-body row">
                     <div class="col-md">
                         <div class="form-group">
-                            <label class="control-label">Senha atual</label>
-                            <input value="@Model.Senha" class="form-control" readonly />
-                            <span class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label class="control-label">Nova senha</label>
-                            <input name="NovaSenha" type="password" class="form-control" />
-                            <span class="text-danger"></span>
+                            <label asp-for="Senha" class="control-label">Senha</label>
+                            <input asp-for="Senha" value="@Model.Senha" class="form-control" />
+                            <span asp-validation-for="Senha" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
